@@ -1,96 +1,151 @@
-import { motion } from "framer-motion";
-import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { ChevronLeft, ChevronRight, Clock, Tag } from "lucide-react";
 
 interface TourCardProps {
   id: string;
   title: string;
-  location: string;
+  subtitle: string;
   duration: string;
-  price: string;
-  difficulty: "Easy" | "Moderate" | "Challenging";
-  imageUrl: string;
-  highlights: string[];
-  species: string[];
-  delay?: number;
+  price: number;
+  originalPrice: number;
+  images: string[];
+  destination: string;
 }
 
-export function TourCard({ 
-  title, 
-  location, 
-  duration, 
-  price, 
-  difficulty, 
-  imageUrl, 
-  highlights,
-  species,
-  delay = 0 
+export function TourCard({
+  title,
+  subtitle,
+  duration,
+  price,
+  originalPrice,
+  images,
 }: TourCardProps) {
-  
-  const difficultyColor = {
-    Easy: "bg-accent/20 text-accent-foreground border-accent/30",
-    Moderate: "bg-primary/20 text-primary-foreground border-primary/30",
-    Challenging: "bg-destructive/20 text-destructive border-destructive/30"
+  const [currentImg, setCurrentImg] = useState(0);
+  const savings = originalPrice - price;
+
+  const prev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImg((i) => (i === 0 ? images.length - 1 : i - 1));
+  };
+
+  const next = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImg((i) => (i === images.length - 1 ? 0 : i + 1));
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.7, delay: delay * 0.1, ease: "easeOut" }}
-      className="group flex flex-col bg-card border border-border overflow-hidden hover:shadow-xl transition-all duration-500"
+    <div
+      className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer group"
+      data-testid={`card-tour-${title.toLowerCase().replace(/\s+/g, '-')}`}
     >
-      <div className="relative h-72 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10" />
-        <img 
-          src={imageUrl} 
-          alt={title} 
-          className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
-        />
-        <div className="absolute top-4 left-4 z-20">
-          <Badge variant="outline" className={`backdrop-blur-md ${difficultyColor[difficulty]}`}>
-            {difficulty}
-          </Badge>
+      {/* Image Slider */}
+      <div className="relative h-52 overflow-hidden bg-gray-100">
+        {/* Images */}
+        <div
+          className="flex h-full transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentImg * 100}%)` }}
+        >
+          {images.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt={`${title} - photo ${i + 1}`}
+              className="w-full h-full object-cover shrink-0"
+              style={{ width: "100%" }}
+            />
+          ))}
         </div>
-        <div className="absolute bottom-4 left-4 right-4 z-20 flex justify-between items-end">
-          <div className="flex items-center gap-1.5 text-white/90 text-sm font-medium backdrop-blur-sm bg-black/30 px-3 py-1.5 w-fit">
-            <MapPin className="w-4 h-4" />
-            {location}
-          </div>
-          <div className="flex items-center gap-1.5 text-white/90 text-sm font-medium backdrop-blur-sm bg-black/30 px-3 py-1.5 w-fit font-mono">
-            <Clock className="w-4 h-4" />
-            {duration}
-          </div>
+
+        {/* Duration badge */}
+        <div className="absolute top-3 left-3 bg-black/60 text-white text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5 backdrop-blur-sm">
+          <Clock className="w-3 h-3" />
+          {duration}
         </div>
-      </div>
-      
-      <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-2xl font-serif mb-3 group-hover:text-primary transition-colors">{title}</h3>
-        
-        <div className="mb-6 space-y-2 flex-grow">
-          <p className="text-sm text-muted-foreground uppercase tracking-wider font-mono font-medium mb-2 border-b border-border/50 pb-2">Target Species</p>
-          <div className="flex flex-wrap gap-2">
-            {species.map((s, i) => (
-              <span key={i} className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-sm italic">
-                {s}
-              </span>
+
+        {/* Prev/Next arrows */}
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow rounded-full w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              aria-label="Previous photo"
+            >
+              <ChevronLeft className="w-4 h-4 text-gray-800" />
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow rounded-full w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              aria-label="Next photo"
+            >
+              <ChevronRight className="w-4 h-4 text-gray-800" />
+            </button>
+          </>
+        )}
+
+        {/* Dot indicators */}
+        {images.length > 1 && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setCurrentImg(i); }}
+                className={`rounded-full transition-all ${
+                  i === currentImg ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/60"
+                }`}
+                aria-label={`Go to photo ${i + 1}`}
+              />
             ))}
           </div>
+        )}
+      </div>
+
+      {/* Card Content */}
+      <div className="p-4">
+        {/* Title */}
+        <div className="mb-3">
+          <h3 className="text-sm font-bold text-gray-900 leading-snug" style={{ fontFamily: 'Poppins, sans-serif' }}>
+            {title}
+          </h3>
+          {subtitle && (
+            <p className="text-xs text-gray-500 mt-0.5 font-medium">{subtitle}</p>
+          )}
         </div>
-        
-        <div className="flex items-center justify-between pt-6 border-t border-border mt-auto">
-          <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground uppercase tracking-widest">From</span>
-            <span className="font-mono text-lg font-medium">{price}</span>
+
+        {/* Price Row */}
+        <div className="flex items-center justify-between">
+          <div>
+            {/* Save badge */}
+            {savings > 0 && (
+              <div className="flex items-center gap-1 mb-1">
+                <Tag className="w-3 h-3 text-primary" />
+                <span className="text-xs text-primary font-semibold">
+                  Save ₹{savings.toLocaleString('en-IN')}
+                </span>
+              </div>
+            )}
+            <div className="flex items-baseline gap-2">
+              <span className="text-lg font-bold text-primary" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                ₹{price.toLocaleString('en-IN')}
+              </span>
+              {originalPrice > price && (
+                <span className="text-xs text-gray-400 line-through">
+                  ₹{originalPrice.toLocaleString('en-IN')}
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-gray-400">per person</p>
           </div>
-          
-          <button className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors group/btn">
-            View Itinerary
-            <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+
+          <button
+            className="bg-primary text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+            data-testid={`button-book-${title.toLowerCase().replace(/\s+/g, '-')}`}
+          >
+            Book Now
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

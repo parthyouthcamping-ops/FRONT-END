@@ -1,264 +1,453 @@
+import { useState } from "react";
 import { Navbar } from "@/components/navbar";
+import { DestinationTabs } from "@/components/destination-tabs";
 import { TourCard } from "@/components/tour-card";
-import { motion } from "framer-motion";
-import { ChevronDown, Filter, Leaf } from "lucide-react";
-import heroImg from "@/assets/images/hero.png";
-import costaRicaImg from "@/assets/images/costa-rica.png";
-import pantanalImg from "@/assets/images/pantanal.png";
-import himalayasImg from "@/assets/images/himalayas.png";
-import madagascarImg from "@/assets/images/madagascar.png";
-import africaImg from "@/assets/images/africa.png";
-import newZealandImg from "@/assets/images/new-zealand.png";
-import aboutImg from "@/assets/images/about.png";
+import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 
-const TOURS = [
-  {
-    id: "costa-rica",
-    title: "Cloud Forests & Quetzals",
-    location: "Costa Rica",
-    duration: "10 Days",
-    price: "$4,200",
-    difficulty: "Moderate" as const,
-    imageUrl: costaRicaImg,
-    highlights: ["Monteverde Reserve", "Arenal Volcano", "Sarapiquí"],
-    species: ["Resplendent Quetzal", "Three-wattled Bellbird", "Keel-billed Toucan"]
-  },
-  {
-    id: "pantanal",
-    title: "Wetlands & Macaws",
-    location: "Brazil",
-    duration: "12 Days",
-    price: "$5,800",
-    difficulty: "Easy" as const,
-    imageUrl: pantanalImg,
-    highlights: ["Northern Pantanal", "Porto Jofre", "Cuiabá River"],
-    species: ["Hyacinth Macaw", "Jaguar", "Jabiru Stork", "Sunbittern"]
-  },
-  {
-    id: "himalayas",
-    title: "Himalayan Avian Altitudes",
-    location: "Bhutan & India",
-    duration: "15 Days",
-    price: "$6,500",
-    difficulty: "Challenging" as const,
-    imageUrl: himalayasImg,
-    highlights: ["Phobjikha Valley", "Pele La Pass", "Eaglenest Sanctuary"],
-    species: ["Himalayan Monal", "Rufous-necked Hornbill", "Ward's Trogon"]
-  },
-  {
-    id: "madagascar",
-    title: "Endemic Evolution",
-    location: "Madagascar",
-    duration: "14 Days",
-    price: "$5,900",
-    difficulty: "Moderate" as const,
-    imageUrl: madagascarImg,
-    highlights: ["Andasibe-Mantadia", "Ranomafana", "Ifaty"],
-    species: ["Paradise Flycatcher", "Pitta-like Ground Roller", "Indri Lemur"]
-  },
-  {
-    id: "africa",
-    title: "Savanna Winged Wonders",
-    location: "Kenya & Tanzania",
-    duration: "12 Days",
-    price: "$7,200",
-    difficulty: "Easy" as const,
-    imageUrl: africaImg,
-    highlights: ["Masai Mara", "Serengeti", "Ngorongoro Crater"],
-    species: ["Lilac-breasted Roller", "Secretarybird", "Kori Bustard"]
-  },
-  {
-    id: "new-zealand",
-    title: "Alpine Parrots & Fjords",
-    location: "New Zealand",
-    duration: "16 Days",
-    price: "$6,800",
-    difficulty: "Moderate" as const,
-    imageUrl: newZealandImg,
-    highlights: ["Fiordland", "Arthur's Pass", "Stewart Island"],
-    species: ["Kea", "Takahē", "Yellow-eyed Penguin", "Kākāpō"]
-  }
-];
+const tourData: Record<string, {
+  sectionTitle: string;
+  tours: {
+    id: string;
+    title: string;
+    subtitle: string;
+    duration: string;
+    price: number;
+    originalPrice: number;
+    destination: string;
+    images: string[];
+  }[];
+}[]> = {
+  dubai: [{
+    sectionTitle: "Dubai Tour Packages",
+    tours: [
+      {
+        id: "dubai-1",
+        title: "Dubai Tour Package",
+        subtitle: "with Abu Dhabi City Tour",
+        duration: "7 Days 6 Nights",
+        price: 48800,
+        originalPrice: 53300,
+        destination: "dubai",
+        images: [
+          "https://img.avianexperiences.com/trek/7d83992f-285e-431a-b86b-bd5d5c06d038",
+          "https://img.avianexperiences.com/trek/2a2f806c-4a55-4f49-9873-4a47969db037",
+          "https://img.avianexperiences.com/trek/c303c796-e108-4ee5-95bd-48e4441d68f1",
+        ],
+      },
+      {
+        id: "dubai-2",
+        title: "Dubai Travel Package",
+        subtitle: "with Monorail Experience",
+        duration: "6 Days 5 Nights",
+        price: 40800,
+        originalPrice: 45800,
+        destination: "dubai",
+        images: [
+          "https://img.avianexperiences.com/trek/e77d0991-92d6-4460-b925-894b844bc372",
+          "https://img.avianexperiences.com/trek/f7facbaf-700f-4603-8fe6-165ca4accc49",
+          "https://img.avianexperiences.com/trek/c7ea0062-078e-4f5d-9292-46b985547e4b",
+        ],
+      },
+      {
+        id: "dubai-3",
+        title: "Dubai Highlights",
+        subtitle: "City Tour & Burj Khalifa Visit",
+        duration: "5 Days 4 Nights",
+        price: 33800,
+        originalPrice: 37300,
+        destination: "dubai",
+        images: [
+          "https://img.avianexperiences.com/trek/84333c16-cceb-40a2-aa77-dd08da486a10",
+          "https://img.avianexperiences.com/trek/1a4e683b-91a1-462b-b462-0313d33028dd",
+          "https://img.avianexperiences.com/trek/68f188e0-61ca-4d10-bb77-1b84adcd9457",
+        ],
+      },
+      {
+        id: "dubai-4",
+        title: "Discover Dubai",
+        subtitle: "with Desert Safari",
+        duration: "4 Days 3 Nights",
+        price: 25800,
+        originalPrice: 29800,
+        destination: "dubai",
+        images: [
+          "https://img.avianexperiences.com/trek/df905eb8-301d-4205-82d9-8c4af1e46d11",
+          "https://img.avianexperiences.com/trek/034719fc-0457-4609-9412-c4500e212edb",
+          "https://img.avianexperiences.com/trek/4ffeb481-1cec-4f88-9c2d-93f5d890ff41",
+        ],
+      },
+      {
+        id: "dubai-5",
+        title: "Best of Dubai",
+        subtitle: "with Abu Dhabi Stay",
+        duration: "6 Days 5 Nights",
+        price: 52800,
+        originalPrice: 58800,
+        destination: "dubai",
+        images: [
+          "https://img.avianexperiences.com/trek/d9ed86bd-92cc-441e-bbcb-b118add29133",
+          "https://img.avianexperiences.com/trek/ea4aeb45-1e6e-4178-835c-a04737825869",
+          "https://img.avianexperiences.com/trek/1602a1ab-c834-4530-8366-e1ce49f741b1",
+        ],
+      },
+      {
+        id: "dubai-6",
+        title: "Dubai with Lapita Resort",
+        subtitle: "Free Access to one Park",
+        duration: "6 Days 5 Nights",
+        price: 45800,
+        originalPrice: 50600,
+        destination: "dubai",
+        images: [
+          "https://img.avianexperiences.com/trek/56631a68-c1c5-4bf5-96cc-0e003a467a07",
+          "https://img.avianexperiences.com/trek/2e1ce3cb-4f6d-4f2d-81e6-f1971475b971",
+          "https://img.avianexperiences.com/trek/aaa91944-e165-46ea-b95d-30d94754bb03",
+        ],
+      },
+    ],
+  }],
+  vietnam: [{
+    sectionTitle: "Vietnam Tour Packages",
+    tours: [
+      {
+        id: "vietnam-1",
+        title: "Explore Vietnam",
+        subtitle: "Hanoi, Da Nang & Ho Chi Minh",
+        duration: "9 Days 8 Nights",
+        price: 52600,
+        originalPrice: 58000,
+        destination: "vietnam",
+        images: [
+          "https://img.avianexperiences.com/trek/c94d1328-79f6-431e-b8a0-29832507cd84",
+          "https://img.avianexperiences.com/trek/a25b32e6-49f9-4380-b077-6b83c4ef2c0e",
+          "https://img.avianexperiences.com/trek/3a3f7044-9329-4fb2-b3f9-ecb9c682b6ac",
+        ],
+      },
+      {
+        id: "vietnam-2",
+        title: "Vietnam Golden Triangle",
+        subtitle: "Hanoi, Halong Bay & Hoi An",
+        duration: "8 Days 7 Nights",
+        price: 44800,
+        originalPrice: 51000,
+        destination: "vietnam",
+        images: [
+          "https://img.avianexperiences.com/trek/629979f0-d1c8-482f-85b6-0c0ede857850",
+          "https://img.avianexperiences.com/trek/69788bcf-0b55-4a67-89f3-4f658b4bd8a1",
+          "https://img.avianexperiences.com/trek/af82ff55-fc0d-4f18-b3f9-ecb9c682b6ac",
+        ],
+      },
+      {
+        id: "vietnam-3",
+        title: "Vietnam & Cambodia",
+        subtitle: "with Angkor Wat Tour",
+        duration: "11 Days 10 Nights",
+        price: 67200,
+        originalPrice: 75000,
+        destination: "vietnam",
+        images: [
+          "https://img.avianexperiences.com/trek/cd1bff33-8c58-41d1-810d-5d5d0d05d678",
+          "https://img.avianexperiences.com/trek/c94d1328-79f6-431e-b8a0-29832507cd84",
+          "https://img.avianexperiences.com/trek/483196f2-312e-4ed4-afeb-9574c8ed9084",
+        ],
+      },
+    ],
+  }],
+  bali: [{
+    sectionTitle: "Bali Tour Packages",
+    tours: [
+      {
+        id: "bali-1",
+        title: "Best of Bali",
+        subtitle: "Ubud, Seminyak & Uluwatu",
+        duration: "7 Days 6 Nights",
+        price: 38500,
+        originalPrice: 44000,
+        destination: "bali",
+        images: [
+          "https://img.avianexperiences.com/trek/bd45d14c-099e-4d76-9378-4a6e72c00f9d",
+          "https://img.avianexperiences.com/trek/ff285884-bd5b-4f93-a8ad-9501b3e17bad",
+          "https://img.avianexperiences.com/trek/7d83992f-285e-431a-b86b-bd5d5c06d038",
+        ],
+      },
+      {
+        id: "bali-2",
+        title: "Romantic Bali Honeymoon",
+        subtitle: "Private Villa & Spa Included",
+        duration: "6 Days 5 Nights",
+        price: 55000,
+        originalPrice: 62000,
+        destination: "bali",
+        images: [
+          "https://img.avianexperiences.com/trek/2a2f806c-4a55-4f49-9873-4a47969db037",
+          "https://img.avianexperiences.com/trek/bd45d14c-099e-4d76-9378-4a6e72c00f9d",
+          "https://img.avianexperiences.com/trek/c303c796-e108-4ee5-95bd-48e4441d68f1",
+        ],
+      },
+      {
+        id: "bali-3",
+        title: "Bali Budget Package",
+        subtitle: "Temples, Rice Terraces & Beach",
+        duration: "5 Days 4 Nights",
+        price: 24800,
+        originalPrice: 29500,
+        destination: "bali",
+        images: [
+          "https://img.avianexperiences.com/trek/e77d0991-92d6-4460-b925-894b844bc372",
+          "https://img.avianexperiences.com/trek/7d83992f-285e-431a-b86b-bd5d5c06d038",
+          "https://img.avianexperiences.com/trek/f7facbaf-700f-4603-8fe6-165ca4accc49",
+        ],
+      },
+    ],
+  }],
+  spiti: [{
+    sectionTitle: "Spiti Valley Tour Packages",
+    tours: [
+      {
+        id: "spiti-1",
+        title: "Winter Spiti Group Trip",
+        subtitle: "from Delhi with Chitkul Stay",
+        duration: "8 Days 7 Nights",
+        price: 17800,
+        originalPrice: 21800,
+        destination: "spiti",
+        images: [
+          "https://img.avianexperiences.com/trek/a2199543-ae66-4cd1-8013-4632f393a1b8/Winter_Spiti_01.webp",
+          "https://img.avianexperiences.com/trek/987f7011-6106-4c6f-a526-a46d706497dc/Winter_Spiti_02.webp",
+          "https://img.avianexperiences.com/trek/ba5e9d18-6e69-4a7d-a44c-bcfa38c79844/Winter_Spiti_04.webp",
+        ],
+      },
+      {
+        id: "spiti-2",
+        title: "Spiti Valley Summer Trek",
+        subtitle: "Pin Valley & Key Monastery",
+        duration: "10 Days 9 Nights",
+        price: 22500,
+        originalPrice: 27000,
+        destination: "spiti",
+        images: [
+          "https://img.avianexperiences.com/trek/bcd7ce32-bbbc-418b-86e9-17a69b595477/Winter_Spiti_03.webp",
+          "https://img.avianexperiences.com/trek/03722d76-bdc1-41db-8b36-25e76e4dbd1b/Winter_Spiti_05.webp",
+          "https://img.avianexperiences.com/trek/a2199543-ae66-4cd1-8013-4632f393a1b8/Winter_Spiti_01.webp",
+        ],
+      },
+    ],
+  }],
+  ladakh: [{
+    sectionTitle: "Ladakh Tour Packages",
+    tours: [
+      {
+        id: "ladakh-1",
+        title: "Ladakh Bike Trip",
+        subtitle: "Leh to Khardung La Pass",
+        duration: "9 Days 8 Nights",
+        price: 29500,
+        originalPrice: 34000,
+        destination: "ladakh",
+        images: [
+          "https://img.avianexperiences.com/trek/c94d1328-79f6-431e-b8a0-29832507cd84",
+          "https://img.avianexperiences.com/trek/84333c16-cceb-40a2-aa77-dd08da486a10",
+          "https://img.avianexperiences.com/trek/1a4e683b-91a1-462b-b462-0313d33028dd",
+        ],
+      },
+      {
+        id: "ladakh-2",
+        title: "Leh Ladakh Family Trip",
+        subtitle: "Pangong Tso & Nubra Valley",
+        duration: "7 Days 6 Nights",
+        price: 24800,
+        originalPrice: 29000,
+        destination: "ladakh",
+        images: [
+          "https://img.avianexperiences.com/trek/68f188e0-61ca-4d10-bb77-1b84adcd9457",
+          "https://img.avianexperiences.com/trek/40073301-adb6-4870-a9dd-f6e31719adcf",
+          "https://img.avianexperiences.com/trek/41a457a6-9bbe-452d-9380-1fc0f9e87b61",
+        ],
+      },
+      {
+        id: "ladakh-3",
+        title: "Ladakh Winter Frozen Lake",
+        subtitle: "Chadar Trek Experience",
+        duration: "11 Days 10 Nights",
+        price: 35000,
+        originalPrice: 41000,
+        destination: "ladakh",
+        images: [
+          "https://img.avianexperiences.com/trek/df905eb8-301d-4205-82d9-8c4af1e46d11",
+          "https://img.avianexperiences.com/trek/034719fc-0457-4609-9412-c4500e212edb",
+          "https://img.avianexperiences.com/trek/c94d1328-79f6-431e-b8a0-29832507cd84",
+        ],
+      },
+    ],
+  }],
+  kashmir: [{
+    sectionTitle: "Kashmir Tour Packages",
+    tours: [
+      {
+        id: "kashmir-1",
+        title: "Kashmir Winter Wonderland",
+        subtitle: "Gulmarg Snow Experience",
+        duration: "6 Days 5 Nights",
+        price: 21500,
+        originalPrice: 26000,
+        destination: "kashmir",
+        images: [
+          "https://img.avianexperiences.com/trek/4ffeb481-1cec-4f88-9c2d-93f5d890ff41",
+          "https://img.avianexperiences.com/trek/dbed4fce-c2f1-4137-a69e-d9cdb8a5a391",
+          "https://img.avianexperiences.com/trek/7d273d5b-a134-4e9f-ad74-0d7566e89914",
+        ],
+      },
+      {
+        id: "kashmir-2",
+        title: "Kashmir Paradise Valley",
+        subtitle: "Dal Lake & Pahalgam",
+        duration: "7 Days 6 Nights",
+        price: 19800,
+        originalPrice: 24500,
+        destination: "kashmir",
+        images: [
+          "https://img.avianexperiences.com/trek/d9ed86bd-92cc-441e-bbcb-b118add29133",
+          "https://img.avianexperiences.com/trek/ea4aeb45-1e6e-4178-835c-a04737825869",
+          "https://img.avianexperiences.com/trek/4ffeb481-1cec-4f88-9c2d-93f5d890ff41",
+        ],
+      },
+    ],
+  }],
+};
+
+// All destinations combined  
+const allSections = Object.values(tourData).flat();
+
+const tabToKey: Record<string, string[]> = {
+  all: Object.keys(tourData),
+  dubai: ["dubai"],
+  vietnam: ["vietnam"],
+  bali: ["bali"],
+  spiti: ["spiti"],
+  ladakh: ["ladakh"],
+  kashmir: ["kashmir"],
+  thailand: [],
+  northeast: [],
+  manali: [],
+  goa: [],
+  maldives: [],
+  malaysia: [],
+  georgia: [],
+  jaisalmer: [],
+  kerala: [],
+  andaman: [],
+  rajasthan: [],
+  uttarakhand: [],
+};
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState("all");
+
+  const visibleKeys = tabToKey[activeTab] ?? [];
+  const sections =
+    activeTab === "all"
+      ? allSections
+      : visibleKeys.flatMap((k) => tourData[k] ?? []);
+
   return (
-    <div className="min-h-screen bg-background font-sans selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-gray-50" style={{ fontFamily: 'Poppins, sans-serif' }}>
       <Navbar />
+      <DestinationTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {/* Hero Section */}
-      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black/40 z-10" />
-          <img 
-            src={heroImg} 
-            alt="Misty rainforest canopy" 
-            className="w-full h-full object-cover object-center"
-          />
-        </div>
-        
-        <div className="relative z-20 max-w-4xl mx-auto px-6 text-center text-white mt-16">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          >
-            <h2 className="text-sm md:text-base font-mono uppercase tracking-[0.3em] mb-6 text-white/80">Avian Experiences</h2>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif mb-6 leading-tight">
-              Quiet pursuit of <br />the extraordinary.
-            </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto font-light leading-relaxed mb-12">
-              Elite expeditions for passionate naturalists. We trace the world's most biodiverse edges to find the rare, the endemic, and the magnificent.
-            </p>
-          </motion.div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 text-white/60 flex flex-col items-center gap-2">
-          <span className="text-xs uppercase tracking-widest font-mono">Scroll to explore</span>
-          <motion.div 
-            animate={{ y: [0, 10, 0] }} 
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="w-5 h-5" />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Ethos Section */}
-      <section id="ethos" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="relative h-[600px]"
-          >
-            <div className="absolute inset-0 bg-primary/10 translate-x-4 translate-y-4 -z-10" />
-            <img 
-              src={aboutImg} 
-              alt="Field journal and binoculars" 
-              className="w-full h-full object-cover border border-border"
-            />
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-muted-foreground mb-4">Our Ethos</h2>
-            <h3 className="text-4xl md:text-5xl font-serif mb-8 text-foreground leading-tight">Like a field journal brought to life.</h3>
-            <div className="space-y-6 text-muted-foreground leading-relaxed text-lg font-light">
-              <p>
-                We are not a traditional travel company. We are a collective of master naturalists, ornithologists, and conservationists who believe that true wildlife observation requires patience, reverence, and deep local knowledge.
-              </p>
-              <p>
-                Our expeditions are small, considered, and intimately connected to the rhythms of the habitats we visit. We don't chase checkboxes; we pursue profound encounters with the natural world in its most undisturbed states.
-              </p>
-            </div>
-            <div className="mt-10 grid grid-cols-2 gap-8 pt-8 border-t border-border/50">
-              <div>
-                <h4 className="font-serif text-2xl mb-2">4-6</h4>
-                <p className="text-sm text-muted-foreground font-mono uppercase tracking-wider">Guests per expedition</p>
-              </div>
-              <div>
-                <h4 className="font-serif text-2xl mb-2">15+</h4>
-                <p className="text-sm text-muted-foreground font-mono uppercase tracking-wider">Years field experience</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Expeditions Section */}
-      <section id="expeditions" className="py-24 bg-card/50 px-6 md:px-12 border-y border-border/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-muted-foreground mb-4">Curated Journeys</h2>
-              <h3 className="text-4xl md:text-5xl font-serif text-foreground">Upcoming Expeditions</h3>
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex items-center gap-4 text-sm"
-            >
-              <button className="flex items-center gap-2 border border-border bg-background px-4 py-2 hover:border-primary transition-colors hover-elevate">
-                <Filter className="w-4 h-4" />
-                Filter by Region
-              </button>
-              <button className="flex items-center gap-2 border border-border bg-background px-4 py-2 hover:border-primary transition-colors hover-elevate">
-                Difficulty
-              </button>
-            </motion.div>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-8">
+        {sections.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-4xl mb-4">🏕️</p>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Coming Soon</h3>
+            <p className="text-gray-500 text-sm">Tour packages for this destination are being curated. Check back soon!</p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {TOURS.map((tour, idx) => (
-              <TourCard key={tour.id} {...tour} delay={idx} />
+        ) : (
+          <div className="space-y-10">
+            {sections.map((section) => (
+              <div key={section.sectionTitle}>
+                <h2
+                  className="text-xl font-bold text-gray-900 mb-5"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                  data-testid={`section-${section.sectionTitle.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {section.sectionTitle}
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {section.tours.map((tour) => (
+                    <TourCard key={tour.id} {...tour} />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
-          
-          <div className="mt-16 text-center">
-            <button className="border border-border bg-background px-8 py-4 font-medium hover:border-primary hover:text-primary transition-colors hover-elevate font-mono uppercase tracking-wider text-sm">
-              View Complete Calendar
-            </button>
-          </div>
-        </div>
-      </section>
+        )}
+      </main>
 
       {/* Footer */}
-      <footer className="bg-foreground text-background py-20 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <Leaf className="w-6 h-6 text-primary" />
-              <span className="font-serif text-2xl tracking-wide">Avian Experiences</span>
+      <footer className="bg-gray-900 text-white mt-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+            {/* Brand */}
+            <div className="md:col-span-1">
+              <div className="text-xl font-bold mb-3">
+                <span className="text-primary">Avian</span>Experiences
+              </div>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                Your trusted travel partner for unforgettable group trips and customised tour packages across India and abroad.
+              </p>
+              <div className="flex gap-3">
+                {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
+                  <a key={i} href="#" className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                    <Icon className="w-4 h-4" />
+                  </a>
+                ))}
+              </div>
             </div>
-            <p className="text-background/60 max-w-md font-light leading-relaxed mb-8">
-              Quietly premium wildlife and bird-watching expeditions for those who revere the natural world.
-            </p>
-            <div className="flex gap-4">
-              {/* Social icons would go here */}
+
+            {/* Popular Destinations */}
+            <div>
+              <h4 className="font-semibold text-sm text-gray-300 uppercase tracking-wider mb-4">Popular Destinations</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                {["Ladakh", "Spiti Valley", "Kashmir", "Bali", "Vietnam", "Dubai", "Thailand", "Maldives"].map((d) => (
+                  <li key={d}><a href="#" className="hover:text-white transition-colors">{d}</a></li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold text-sm text-gray-300 uppercase tracking-wider mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                {["Tour Packages", "Group Trips", "Creator Trips", "About Us", "Blog", "Privacy Policy", "Terms & Conditions"].map((l) => (
+                  <li key={l}><a href="#" className="hover:text-white transition-colors">{l}</a></li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="font-semibold text-sm text-gray-300 uppercase tracking-wider mb-4">Contact Us</h4>
+              <ul className="space-y-3 text-sm text-gray-400">
+                <li className="flex items-start gap-2">
+                  <Phone className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                  <span>+91 98765 43210</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Mail className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                  <span>hello@avianexperiences.com</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                  <span>Mumbai, Maharashtra, India</span>
+                </li>
+              </ul>
             </div>
           </div>
-          
-          <div>
-            <h4 className="font-mono text-sm uppercase tracking-widest text-background/40 mb-6">Expeditions</h4>
-            <ul className="space-y-3 text-background/80 font-light">
-              <li><a href="#" className="hover:text-primary transition-colors">Neotropics</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Africa & Madagascar</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Asia & Himalayas</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Australasia</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Custom Private Tours</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h4 className="font-mono text-sm uppercase tracking-widest text-background/40 mb-6">Connect</h4>
-            <ul className="space-y-3 text-background/80 font-light">
-              <li><a href="#" className="hover:text-primary transition-colors">Contact Us</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Request Brochure</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Our Guides</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Conservation Impact</a></li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-background/10 flex flex-col md:flex-row items-center justify-between text-xs text-background/40 font-mono">
-          <p>© {new Date().getFullYear()} Avian Experiences. All rights reserved.</p>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-background transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-background transition-colors">Terms of Service</a>
+
+          <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
+            <p>© {new Date().getFullYear()} Avian Experiences. All rights reserved.</p>
+            <p className="mt-2 md:mt-0">Made with care for travellers across India</p>
           </div>
         </div>
       </footer>

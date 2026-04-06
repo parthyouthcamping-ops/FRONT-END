@@ -1,28 +1,72 @@
 import { Link } from "wouter";
-import { Leaf } from "lucide-react";
+import { useState } from "react";
+import { Search, Phone, Menu, X } from "lucide-react";
 
 export function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50 py-4 px-6 md:px-12 transition-all duration-300">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-foreground group">
-          <Leaf className="w-6 h-6 text-primary group-hover:text-secondary transition-colors" />
-          <span className="font-serif text-xl tracking-wide font-medium">Avian Experiences</span>
-        </Link>
-        
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-          <Link href="#expeditions" className="hover:text-primary transition-colors text-muted-foreground hover-elevate px-2 py-1">Expeditions</Link>
-          <Link href="#ethos" className="hover:text-primary transition-colors text-muted-foreground hover-elevate px-2 py-1">Our Ethos</Link>
-          <Link href="#journal" className="hover:text-primary transition-colors text-muted-foreground hover-elevate px-2 py-1">Field Journal</Link>
-          <Link href="#contact" className="hover:text-primary transition-colors text-muted-foreground hover-elevate px-2 py-1">Contact</Link>
-        </div>
-        
-        <div className="flex items-center">
-          <Link href="#expeditions" className="bg-primary text-primary-foreground px-6 py-2 text-sm font-medium hover:bg-secondary transition-colors hover-elevate">
-            View Tours
+    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center">
+              <span className="text-xl font-bold text-primary tracking-tight" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                Avian
+              </span>
+              <span className="text-xl font-bold text-gray-900 tracking-tight" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                Experiences
+              </span>
+            </div>
           </Link>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-1">
+            <Link href="/" className="px-4 py-2 text-sm font-semibold text-primary border-b-2 border-primary">
+              Tour Packages
+            </Link>
+            <Link href="#" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors">
+              Group Trips
+            </Link>
+            <Link href="#" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors">
+              Creator Trips
+            </Link>
+          </div>
+
+          {/* Right Actions */}
+          <div className="flex items-center gap-3">
+            <button className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors">
+              <Phone className="w-4 h-4" />
+              <span>+91 98765 43210</span>
+            </button>
+            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600">
+              <Search className="w-5 h-5" />
+            </button>
+            <button
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1">
+          <Link href="/" className="block px-3 py-2 text-sm font-semibold text-primary rounded-lg bg-red-50">Tour Packages</Link>
+          <Link href="#" className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Group Trips</Link>
+          <Link href="#" className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Creator Trips</Link>
+          <div className="pt-2 border-t border-gray-100">
+            <a href="tel:+919876543210" className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700">
+              <Phone className="w-4 h-4" />
+              +91 98765 43210
+            </a>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
