@@ -1,0 +1,50 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "0-5_K8B3wHFv7hA9coEU9"
+uri = "file://artifacts/tour-packages/src/assets/images/hero.png"
+type = "image"
+title = "Misty rainforest canopy at dawn"
+
+[[generated]]
+id = "BB9FQRIRXJMP1l0ipw1Sv"
+uri = "file://artifacts/tour-packages/src/assets/images/costa-rica.png"
+type = "image"
+title = "Resplendent Quetzal in cloud forest"
+
+[[generated]]
+id = "9POP0WUmLy7dlJifKH-B1"
+uri = "file://artifacts/tour-packages/src/assets/images/pantanal.png"
+type = "image"
+title = "Hyacinth Macaw in Pantanal"
+
+[[generated]]
+id = "d95dsaqhn7e2Q8UPT-CVJ"
+uri = "file://artifacts/tour-packages/src/assets/images/himalayas.png"
+type = "image"
+title = "Himalayan Monal mountain background"
+
+[[generated]]
+id = "M003FaYEgSzLxkKaKPOH8"
+uri = "file://artifacts/tour-packages/src/assets/images/madagascar.png"
+type = "image"
+title = "Madagascar paradise flycatcher"
+
+[[generated]]
+id = "0PsenhWqs_as1NGjnidF4"
+uri = "file://artifacts/tour-packages/src/assets/images/africa.png"
+type = "image"
+title = "Lilac breasted roller savanna"
+
+[[generated]]
+id = "IsBHhal8jAjC4V9Aw3eHF"
+uri = "file://artifacts/tour-packages/src/assets/images/new-zealand.png"
+type = "image"
+title = "Kea bird alpine environment"
+
+[[generated]]
+id = "p5VeQ8fQjG2fodpP9h4I7"
+uri = "file://artifacts/tour-packages/src/assets/images/about.png"
+type = "image"
+title = "Master naturalist field journal vibe"

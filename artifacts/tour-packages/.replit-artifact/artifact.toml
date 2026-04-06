@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Avian Experiences - Tour Packages"
+version = "1.0.0"
+id = "artifacts/tour-packages"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22997
+
+[services.development]
+run = "pnpm --filter @workspace/tour-packages run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/tour-packages", "run", "build" ]
+publicDir = "artifacts/tour-packages/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22997"
+BASE_PATH = "/"
