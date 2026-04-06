@@ -3,24 +3,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const destinations = [
   { id: "all", label: "All Trips", icon: "🌍" },
-  { id: "ladakh", label: "Ladakh", icon: "🏔️" },
-  { id: "vietnam", label: "Vietnam", icon: "🌿" },
-  { id: "bali", label: "Bali", icon: "🌺" },
-  { id: "spiti", label: "Spiti Valley", icon: "⛰️" },
-  { id: "thailand", label: "Thailand", icon: "🐘" },
-  { id: "northeast", label: "North East", icon: "🌲" },
-  { id: "kashmir", label: "Kashmir", icon: "❄️" },
   { id: "manali", label: "Manali", icon: "🏕️" },
-  { id: "goa", label: "Goa", icon: "🏖️" },
-  { id: "maldives", label: "Maldives", icon: "🏝️" },
-  { id: "malaysia", label: "Malaysia", icon: "🦋" },
-  { id: "georgia", label: "Georgia", icon: "🍇" },
-  { id: "jaisalmer", label: "Jaisalmer", icon: "🐪" },
+  { id: "spiti", label: "Spiti Valley", icon: "⛰️" },
+  { id: "ladakh", label: "Ladakh", icon: "🏔️" },
+  { id: "kedarnath", label: "Kedarnath", icon: "🛕" },
+  { id: "shimla", label: "Shimla", icon: "🌄" },
   { id: "kerala", label: "Kerala", icon: "🌴" },
-  { id: "andaman", label: "Andaman", icon: "🐠" },
-  { id: "dubai", label: "Dubai", icon: "🌆" },
-  { id: "rajasthan", label: "Rajasthan", icon: "🏯" },
-  { id: "uttarakhand", label: "Uttarakhand", icon: "🏔️" },
+  { id: "kasol", label: "Kasol", icon: "🌿" },
 ];
 
 interface DestinationTabsProps {
@@ -39,7 +28,6 @@ export function DestinationTabs({ activeTab, onTabChange }: DestinationTabsProps
   return (
     <div className="bg-white border-b border-gray-200 sticky top-16 z-40 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative">
-        {/* Left scroll button */}
         <button
           onClick={() => scroll("left")}
           className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md border border-gray-200 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-50 transition-colors"
@@ -48,7 +36,6 @@ export function DestinationTabs({ activeTab, onTabChange }: DestinationTabsProps
           <ChevronLeft className="w-4 h-4 text-gray-600" />
         </button>
 
-        {/* Scrollable tab list */}
         <div
           ref={scrollRef}
           className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2 px-8"
@@ -69,7 +56,6 @@ export function DestinationTabs({ activeTab, onTabChange }: DestinationTabsProps
           ))}
         </div>
 
-        {/* Right scroll button */}
         <button
           onClick={() => scroll("right")}
           className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md border border-gray-200 rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-50 transition-colors"
