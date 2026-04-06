@@ -13,10 +13,10 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="flex items-center">
               <span className="text-xl font-bold text-primary tracking-tight" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                Avian
+                Youth
               </span>
               <span className="text-xl font-bold text-gray-900 tracking-tight" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                Experiences
+                Camping
               </span>
             </div>
           </Link>
@@ -29,16 +29,13 @@ export function Navbar() {
             <Link href="#" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors">
               Group Trips
             </Link>
-            <Link href="#" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors">
-              Creator Trips
-            </Link>
           </div>
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
             <button className="hidden md:flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors">
               <Phone className="w-4 h-4" />
-              <span>+91 98765 43210</span>
+              <span>+91 99242 46267</span>
             </button>
             <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600">
               <Search className="w-5 h-5" />
@@ -58,11 +55,10 @@ export function Navbar() {
         <div className="md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1">
           <Link href="/" className="block px-3 py-2 text-sm font-semibold text-primary rounded-lg bg-red-50">Tour Packages</Link>
           <Link href="#" className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Group Trips</Link>
-          <Link href="#" className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Creator Trips</Link>
           <div className="pt-2 border-t border-gray-100">
-            <a href="tel:+919876543210" className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700">
+            <a href="tel:+919924246267" className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700">
               <Phone className="w-4 h-4" />
-              +91 98765 43210
+              +91 99242 46267
             </a>
           </div>
         </div>

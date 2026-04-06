@@ -391,10 +391,10 @@ export default function Home() {
             {/* Brand */}
             <div className="md:col-span-1">
               <div className="text-xl font-bold mb-3">
-                <span className="text-primary">Avian</span>Experiences
+                <span className="text-primary">Youth</span>Camping
               </div>
               <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                Your trusted travel partner for unforgettable group trips and customised tour packages across India and abroad.
+                Your trusted travel partner for unforgettable youth camping trips and customised tour packages across India and abroad.
               </p>
               <div className="flex gap-3">
                 {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
@@ -419,7 +419,7 @@ export default function Home() {
             <div>
               <h4 className="font-semibold text-sm text-gray-300 uppercase tracking-wider mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                {["Tour Packages", "Group Trips", "Creator Trips", "About Us", "Blog", "Privacy Policy", "Terms & Conditions"].map((l) => (
+                {["Tour Packages", "Group Trips", "About Us", "Blog", "Privacy Policy", "Terms & Conditions"].map((l) => (
                   <li key={l}><a href="#" className="hover:text-white transition-colors">{l}</a></li>
                 ))}
               </ul>
@@ -431,22 +431,22 @@ export default function Home() {
               <ul className="space-y-3 text-sm text-gray-400">
                 <li className="flex items-start gap-2">
                   <Phone className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
-                  <span>+91 98765 43210</span>
+                  <span>+91 99242 46267</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Mail className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
-                  <span>hello@avianexperiences.com</span>
+                  <span>hello@youthcamping.in</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
-                  <span>Mumbai, Maharashtra, India</span>
+                  <span>Ahmedabad, Gujarat, India</span>
                 </li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
-            <p>© {new Date().getFullYear()} Avian Experiences. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} YouthCamping. All rights reserved.</p>
             <p className="mt-2 md:mt-0">Made with care for travellers across India</p>
           </div>
         </div>
