@@ -254,78 +254,35 @@ function Home() {
         </div>
       </div>
 
-      {/* Tour Sections */}
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-10 space-y-14">
-        {pageSections.map((sec) => (
-          <section key={sec.sectionTitle}>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900">{sec.sectionTitle}</h2>
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900">All Trips</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {allTours.map((tour) => (
               <a
-                href="https://www.youthcamping.in/collections/tours"
+                key={tour.id}
+                href={tour.bookingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-primary font-semibold hover:underline"
+                className="block no-underline"
               >
-                View All
+                <TourCard
+                  id={tour.id}
+                  title={tour.title}
+                  subtitle={tour.subtitle}
+                  duration={tour.duration}
+                  price={tour.price}
+                  originalPrice={tour.originalPrice}
+                  images={tour.images}
+                  destination={tour.destination[0]}
+                />
               </a>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {sec.tours.map((tour) => (
-                <a
-                  key={tour.id}
-                  href={tour.bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block no-underline"
-                >
-                  <TourCard
-                    id={tour.id}
-                    title={tour.title}
-                    subtitle={tour.subtitle}
-                    duration={tour.duration}
-                    price={tour.price}
-                    originalPrice={tour.originalPrice}
-                    images={tour.images}
-                    destination={tour.destination[0]}
-                  />
-                </a>
-              ))}
-            </div>
-          </section>
-        ))}
-      </main>
-
-      {/* About Strip */}
-      <section className="bg-white border-y border-gray-100 py-12">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Who We Are</h2>
-          <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-            At YouthCamping, we're all about awesome trips across India! Whether you're into road trips, trekking, or just
-            exploring cool places, we've got you covered. Our trips are designed for groups of like-minded people who want to
-            have a blast together. We take care of everything — from comfortable accommodations to guided tours — all without
-            breaking the bank. Just tell us when you want to go, and get ready for an epic adventure filled with fun, history,
-            and great food! Join us for the trip of a lifetime.
-          </p>
-          <div className="mt-6 flex items-center justify-center gap-4 flex-wrap text-sm text-gray-500">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              Instant Confirmation
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              Secure & Easy Booking
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              Age 12–35 Group Trips
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              Starting from ₹11,999
-            </span>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white">
