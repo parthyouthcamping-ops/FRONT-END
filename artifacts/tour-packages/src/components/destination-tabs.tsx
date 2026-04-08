@@ -1,15 +1,15 @@
 import { useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Mountain, Palmtree, TentTree, Trees, Landmark, Waves, Snowflake, Compass } from "lucide-react";
 
 const destinations = [
-  { id: "all", label: "All Trips", icon: "🌍" },
-  { id: "manali", label: "Manali", icon: "🏕️" },
-  { id: "spiti", label: "Spiti Valley", icon: "⛰️" },
-  { id: "ladakh", label: "Ladakh", icon: "🏔️" },
-  { id: "kedarnath", label: "Kedarnath", icon: "🛕" },
-  { id: "shimla", label: "Shimla", icon: "🌄" },
-  { id: "kerala", label: "Kerala", icon: "🌴" },
-  { id: "kasol", label: "Kasol", icon: "🌿" },
+  { id: "all", label: "All Trips", icon: Compass },
+  { id: "manali", label: "Manali", icon: TentTree },
+  { id: "spiti", label: "Spiti Valley", icon: Mountain },
+  { id: "ladakh", label: "Ladakh", icon: Snowflake },
+  { id: "kedarnath", label: "Kedarnath", icon: Landmark },
+  { id: "shimla", label: "Shimla", icon: Mountain },
+  { id: "kerala", label: "Kerala", icon: Palmtree },
+  { id: "kasol", label: "Kasol", icon: Trees },
 ];
 
 interface DestinationTabsProps {
@@ -40,20 +40,23 @@ export function DestinationTabs({ activeTab, onTabChange }: DestinationTabsProps
           ref={scrollRef}
           className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2 px-8"
         >
-          {destinations.map((dest) => (
-            <button
-              key={dest.id}
-              onClick={() => onTabChange(dest.id)}
-              className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all shrink-0 ${
-                activeTab === dest.id
-                  ? "bg-primary text-white"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-              }`}
-            >
-              <span className="text-lg leading-none">{dest.icon}</span>
-              <span>{dest.label}</span>
-            </button>
-          ))}
+          {destinations.map((dest) => {
+            const Icon = dest.icon;
+            return (
+              <button
+                key={dest.id}
+                onClick={() => onTabChange(dest.id)}
+                className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all shrink-0 ${
+                  activeTab === dest.id
+                    ? "bg-primary text-white"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span>{dest.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         <button
