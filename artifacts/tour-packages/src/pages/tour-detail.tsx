@@ -289,21 +289,36 @@ export default function TourDetail() {
                 Day-by-Day Itinerary
               </h2>
               <div className="space-y-0">
-                {tour.itinerary.map((item, i) => (
-                  <div key={i} className="relative flex gap-4 pb-6">
-                    {i < tour.itinerary.length - 1 && (
-                      <div className="absolute left-5 top-10 w-0.5 h-full bg-gray-200 z-0" />
-                    )}
-                    <div className="shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold z-10 shadow-md">
-                      {i + 1}
+                {tour.itinerary.map((item, i) => {
+                  const isOpen = openFaq === 100 + i;
+                  return (
+                    <div key={i} className="relative flex gap-4 pb-3">
+                      {i < tour.itinerary.length - 1 && (
+                        <div className="absolute left-5 top-10 w-0.5 bg-gray-200 z-0" style={{ height: "calc(100% - 4px)" }} />
+                      )}
+                      <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold z-10 shadow-md transition-colors ${isOpen ? "bg-primary" : "bg-gray-300"}`}>
+                        {i + 1}
+                      </div>
+                      <div className="flex-1 border border-gray-200 rounded-xl overflow-hidden">
+                        <button
+                          onClick={() => setOpenFaq(isOpen ? null : 100 + i)}
+                          className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50 transition-colors"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-xs font-bold text-primary uppercase tracking-wide shrink-0">{item.day}</span>
+                            <span className="font-semibold text-gray-900 text-sm">{item.title}</span>
+                          </div>
+                          <ChevronRight className={`w-4 h-4 text-gray-400 shrink-0 ml-2 transition-transform duration-200 ${isOpen ? "rotate-90" : ""}`} />
+                        </button>
+                        {isOpen && (
+                          <div className="px-4 pb-4 pt-1 text-sm text-gray-600 leading-relaxed border-t border-gray-100 bg-gray-50">
+                            {item.description}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex-1 bg-gray-50 rounded-xl p-4 border border-gray-100">
-                      <span className="text-xs font-bold text-primary uppercase tracking-wide">{item.day}</span>
-                      <h3 className="font-bold text-gray-900 text-sm mt-0.5 mb-1.5">{item.title}</h3>
-                      <p className="text-sm text-gray-500 leading-relaxed">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
 
