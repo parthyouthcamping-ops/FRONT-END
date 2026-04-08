@@ -6,13 +6,59 @@ import { TourCard } from "@/components/tour-card";
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import { allTours } from "@/data/tours";
 
-function Home() {
-  const [activeTab, setActiveTab] = useState("all");
+const sections = [
+  {
+    id: "top-selling",
+    title: "Top Selling Group Trips",
+    filterIds: ["manali-kasol-1", "winter-spiti", "leh-ladakh-bike", "kedarnath-badrinath", "spiti-valley"],
+  },
+  {
+    id: "manali",
+    title: "Manali & Himachal Pradesh",
+    tags: ["manali", "kasol", "shimla"],
+  },
+  {
+    id: "spiti",
+    title: "Spiti Valley",
+    tags: ["spiti"],
+  },
+  {
+    id: "ladakh",
+    title: "Leh Ladakh",
+    tags: ["ladakh"],
+  },
+  {
+    id: "kedarnath",
+    title: "Kedarnath & Rishikesh",
+    tags: ["kedarnath"],
+  },
+  {
+    id: "kerala",
+    title: "South India – Kerala",
+    tags: ["kerala"],
+  },
+];
 
-  const visibleTours =
-    activeTab === "all"
-      ? allTours
-      : allTours.filter((t) => t.destination.includes(activeTab));
+type Section = { title: string; tours: typeof allTours };
+
+function getSections(tab: string): Section[] {
+  if (tab === "all") {
+    return sections.map((sec) => {
+      const tours = sec.filterIds
+        ? allTours.filter((t) => sec.filterIds!.includes(t.id))
+        : allTours.filter((t) => sec.tags!.some((tag) => t.destination.includes(tag)));
+      return { title: sec.title, tours };
+    }).filter((s) => s.tours.length > 0);
+  }
+  const filtered = allTours.filter((t) => t.destination.includes(tab));
+  if (!filtered.length) return [];
+  const sec = sections.find((s) => s.tags?.includes(tab) || s.id === tab);
+  return [{ title: sec?.title ?? "Tour Packages", tours: filtered }];
+}
+
+export default function Home() {
+  const [activeTab, setActiveTab] = useState("all");
+  const pageSections = getSections(activeTab);
 
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: "Poppins, sans-serif" }}>
@@ -20,14 +66,14 @@ function Home() {
       <DestinationTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
       {/* Hero Banner */}
-      <div className="relative w-full overflow-hidden" style={{ height: 320 }}>
+      <div className="relative w-full overflow-hidden" style={{ height: 340 }}>
         <img
           src="https://vl-prod-static.b-cdn.net/system/images/000/780/691/c436acb230aef2966afeac73a90aa076/original/Purple_Illustration_City_Desktop_Wallpaper.jpg"
           alt="Discover Your Next Adventure"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent flex flex-col items-start justify-center px-10 md:px-20">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-2 drop-shadow">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/35 to-transparent flex flex-col items-start justify-center px-10 md:px-20">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-2 drop-shadow-lg">
             Discover Your Next<br />Adventure
           </h1>
           <p className="text-white/80 text-base md:text-lg mb-6 font-medium">"One Trip at a Time"</p>
@@ -40,29 +86,40 @@ function Home() {
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-6 py-10">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900">
-            {activeTab === "all" ? "All Trips" : `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Trips`}
-            <span className="ml-2 text-sm font-normal text-gray-400">({visibleTours.length} trips)</span>
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {visibleTours.map((tour) => (
-            <Link key={tour.id} href={`/tours/${tour.id}`}>
-              <TourCard
-                id={tour.id}
-                title={tour.title}
-                subtitle={tour.subtitle}
-                duration={tour.duration}
-                price={tour.price}
-                originalPrice={tour.originalPrice}
-                images={tour.images}
-                destination={tour.destination[0]}
-              />
-            </Link>
-          ))}
-        </div>
+      {/* Tour Sections */}
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-10 space-y-12">
+        {pageSections.length === 0 ? (
+          <div className="text-center py-24">
+            <p className="text-5xl mb-4">🏕️</p>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Coming Soon</h3>
+            <p className="text-gray-500 text-sm">Tour packages for this destination are being curated. Check back soon!</p>
+          </div>
+        ) : (
+          pageSections.map((section) => (
+            <div key={section.title}>
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900">{section.title}</h2>
+                <span className="text-sm text-gray-400 font-medium">{section.tours.length} trips</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {section.tours.map((tour) => (
+                  <Link key={tour.id} href={`/tours/${tour.id}`}>
+                    <TourCard
+                      id={tour.id}
+                      title={tour.title}
+                      subtitle={tour.subtitle}
+                      duration={tour.duration}
+                      price={tour.price}
+                      originalPrice={tour.originalPrice}
+                      images={tour.images}
+                      destination={tour.destination[0]}
+                    />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))
+        )}
       </main>
 
       {/* Footer */}
@@ -118,7 +175,7 @@ function Home() {
                   <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
                   <span>Ahmedabad, Gujarat, India</span>
                 </li>
-                <li className="text-xs text-gray-500">Available 10AM – 7PM</li>
+                <li className="text-xs text-gray-500 mt-1">Available 10AM – 7PM</li>
               </ul>
             </div>
           </div>
@@ -132,5 +189,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;
