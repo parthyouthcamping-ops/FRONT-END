@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { Navbar } from "@/components/navbar";
 import { DestinationTabs } from "@/components/destination-tabs";
 import { TourCard } from "@/components/tour-card";
@@ -18,6 +19,7 @@ type Tour = {
   bookingUrl: string;
   overview: string;
   highlights: string[];
+  itinerary: string[];
 };
 
 const allTours: Tour[] = [
@@ -32,6 +34,16 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/manali-kasol-amritsar-adventure-trip-140500",
     overview: "Get ready for an unforgettable journey through Northern India. Explore the Golden Temple, Kasol riverside camping, Manikaran Gurudwara, Bijli Mahadev trek, and the best of Manali.",
     highlights: ["Jalandhar train journey", "Wagah Border", "Golden Temple", "Kasol market", "Manikaran", "Manali", "Solang Valley"],
+    itinerary: [
+      "Day 1: Train journey from Ahmedabad/Vadodara/Surat to Jalandhar/Una",
+      "Day 2: Amritsar sightseeing and Wagah Border",
+      "Day 3: Kasol riverside stay and market",
+      "Day 4: Manikaran Gurudwara and Chalal village",
+      "Day 5: Manali arrival and local sightseeing",
+      "Day 6: Solang Valley and Atal Tunnel",
+      "Day 7: Sissu and Kullu rafting",
+      "Day 8: Return journey",
+    ],
     images: [
       `${CDN}/000/888/076/6f012c2f939c45fd491d86b3d33b0cbb/x540gt/IMG_3309.jpg`,
       `${CDN}/000/748/614/9b56160b1abe219a402c11001702ae24/x540gt/IMG_3398.JPG`,
@@ -49,6 +61,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/manali-kasol-amritsar-trip-137683",
     overview: "A fun backpacking trip through Amritsar, Kasol, and Manali with scenic spots, guided activities, and a packed mountain experience.",
     highlights: ["Amritsar", "Kasol", "Chalal Village", "Vashisht Hot Springs", "Solang Valley", "Manali Mall Road"],
+    itinerary: ["Day 1: Departure", "Day 2: Amritsar", "Day 3: Kasol", "Day 4: Manali", "Day 5: Solang Valley", "Day 6: Leisure and return"],
     images: [
       `${CDN}/000/748/614/9b56160b1abe219a402c11001702ae24/x540gt/IMG_3398.JPG`,
       `${CDN}/000/748/611/6293bbb8cff91918ba4aea8025dca151/x540gt/IMG_3359.JPG`,
@@ -66,6 +79,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/shimla-manali-kullu-138567",
     overview: "A classic Himachal trip with Shimla charm, Manali sightseeing, and Kullu adventure.",
     highlights: ["Shimla", "Manali", "Kullu rafting", "Hadimba Temple", "Mall Road"],
+    itinerary: ["Day 1: Arrival", "Day 2: Shimla", "Day 3: Manali", "Day 4: Local sightseeing", "Day 5: Kullu rafting", "Day 6: Return"],
     images: [
       `${CDN}/000/795/284/3bba832671671da87e0f23ce9864e6c1/x540gt/27121997__26_.jpg`,
       `${CDN}/000/750/627/c9e426f29444d71754171e3f6c9081c8/x540gt/Untitled_design__18_.png`,
@@ -83,6 +97,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/shimla-manali-dalhousie-dharamshala-155815",
     overview: "Explore Shimla, Manali, Dharamshala, and Dalhousie in one scenic mountain journey.",
     highlights: ["Shimla", "Manali", "Dharamshala", "Dalhousie", "Mcleod Ganj"],
+    itinerary: ["Day 1: Departure", "Day 2: Shimla", "Day 3: Manali", "Day 4: Dharamshala", "Day 5: Dalhousie", "Day 6: Return"],
     images: [
       `${CDN}/000/856/207/68ae0d6c7bcc0a7716d1c860e7f2c58d/original/42294194395`,
       `${CDN}/000/795/284/3bba832671671da87e0f23ce9864e6c1/x540gt/27121997__26_.jpg`,
@@ -99,6 +114,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/winter-spiti-156526",
     overview: "A winter wonderland journey through Spiti with snow-covered villages, frozen rivers, and peaceful Himalayan views.",
     highlights: ["Kaza", "Key Monastery", "Frozen rivers", "Snow villages", "Spiti Valley"],
+    itinerary: ["Day 1: Train to Chandigarh", "Day 2: Shimla drive", "Day 3: Sangla", "Day 4: Kalpa", "Day 5: Kaza", "Day 6: Key Monastery", "Day 7: Return"],
     images: [
       `${CDN}/000/862/062/b7cb9dc7ccc9fe863f0f009c4fe1746f/x540gt/Website_Itinerary_Ohotos__2_.png`,
       `${CDN}/000/862/060/5d50edec4e8decdefec9e352873b99e8/x540gt/Website_Itinerary_Ohotos__4_.png`,
@@ -118,6 +134,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/spiti-valley-road-trip-137856",
     overview: "Experience the raw beauty of Himachal with Sangla, Chitkul, Kaza, Chandrataal Lake, and Manali.",
     highlights: ["Sangla", "Chitkul", "Tabo", "Kaza", "Hikkim", "Langza", "Chandrataal Lake"],
+    itinerary: ["Day 1: Ahmedabad to Chandigarh", "Day 2: Drive to Shimla", "Day 3: Sangla", "Day 4: Chitkul", "Day 5: Kaza", "Day 6: Chandrataal", "Day 7: Manali", "Day 8: Return"],
     images: [
       `${CDN}/000/751/384/13bebee8f5dfb67ee1756619de11e44a/x540gt/Untitled_design__50_.png`,
       `${CDN}/000/751/383/f9e9b476346ed8ae84d29f5837f6e093/x540gt/Untitled_design__51_.png`,
@@ -137,6 +154,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/leh-to-leh-bike-expedition-2026-youth-camping-164365",
     overview: "A thrilling bike expedition through Ladakh, covering high passes, Nubra Valley, Turtuk, and Pangong Lake.",
     highlights: ["Leh", "Khardung La", "Nubra Valley", "Turtuk", "Pangong Lake"],
+    itinerary: ["Day 1: Arrive Leh", "Day 2: Acclimatization", "Day 3: Nubra Valley", "Day 4: Turtuk", "Day 5: Pangong Lake", "Day 6: Leh local", "Day 7: Departure"],
     images: [
       `${CDN}/000/888/077/e84148f8d1adacaa5dc96e8f834b8cdd/x540gt/t2-graphy-IJfpVYlRv5I-unsplash.jpg`,
       `${CDN}/000/888/133/bae231ef3cdd69e7dc0d467e3ba04cbe/x540gt/Website_Itinerary_Ohotos__4_.jpg`,
@@ -156,6 +174,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/kedarnath-tungnath-rishikesh-multiple-starting-points-as-addons-138288",
     overview: "A spiritual Himalayan journey covering Kedarnath, Badrinath, Tungnath, and Rishikesh.",
     highlights: ["Kedarnath", "Badrinath", "Tungnath", "Rishikesh", "Ganga Aarti"],
+    itinerary: ["Day 1: Haridwar/Rishikesh", "Day 2: Guptkashi", "Day 3: Kedarnath", "Day 4: Badrinath", "Day 5: Tungnath", "Day 6: Rishikesh", "Day 7: Return"],
     images: [
       `${CDN}/000/748/925/95ce9359f68bd2d93dee6aa2e3a18d17/x540gt/Untitled_design__11_.png`,
       `${CDN}/000/748/920/5abeca5343adce67a22013a929647f71/x540gt/Untitled_design__12_.png`,
@@ -173,6 +192,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/kedarnath-tungnath-rishikesh-backpacking-trip",
     overview: "An immersive Uttarakhand trip with sacred temples, river towns, and mountain views.",
     highlights: ["Haridwar", "Rishikesh", "Chopta", "Kedarnath", "Tungnath"],
+    itinerary: ["Day 1: Delhi departure", "Day 2: Haridwar", "Day 3: Rishikesh", "Day 4: Chopta", "Day 5: Tungnath", "Day 6: Return"],
     images: [
       `${CDN}/000/748/931/95ce9359f68bd2d93dee6aa2e3a18d17/x540gt/Untitled_design__11_.png`,
       `${CDN}/000/748/926/5abeca5343adce67a22013a929647f71/x540gt/Untitled_design__12_.png`,
@@ -190,6 +210,7 @@ const allTours: Tour[] = [
     bookingUrl: "https://www.youthcamping.in/tours/kerala-getaway-165724",
     overview: "A relaxing South India trip through Kerala's green hills, backwaters, and coastal beauty.",
     highlights: ["Munnar", "Alleppey", "Wayanad", "Kochi", "Backwaters"],
+    itinerary: ["Day 1: Kochi arrival", "Day 2: Munnar", "Day 3: Thekkady", "Day 4: Alleppey", "Day 5: Return"],
     images: [
       `${CDN}/000/899/117/e79b48de54e83646c865c90dee281eb2/x540gt/ravi-sangar-dfB4L6PfS4w-unsplash__1_.jpg`,
     ],
@@ -285,16 +306,18 @@ function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {allTours.map((tour) => (
               <button key={tour.id} onClick={() => setSelectedTour(tour)} className="block w-full text-left">
-                <TourCard
-                  id={tour.id}
-                  title={tour.title}
-                  subtitle={tour.subtitle}
-                  duration={tour.duration}
-                  price={tour.price}
-                  originalPrice={tour.originalPrice}
-                  images={tour.images}
-                  destination={tour.destination[0]}
-                />
+                <Link href={`/tours/${tour.id}`}>
+                  <TourCard
+                    id={tour.id}
+                    title={tour.title}
+                    subtitle={tour.subtitle}
+                    duration={tour.duration}
+                    price={tour.price}
+                    originalPrice={tour.originalPrice}
+                    images={tour.images}
+                    destination={tour.destination[0]}
+                  />
+                </Link>
               </button>
             ))}
           </div>
@@ -321,6 +344,14 @@ function Home() {
               {selectedTour.highlights.map((item) => (
                 <span key={item} className="px-3 py-1 rounded-full bg-gray-100 text-xs font-medium text-gray-700">{item}</span>
               ))}
+            </div>
+            <div className="mb-5">
+              <h4 className="font-semibold text-gray-900 mb-2">Itinerary</h4>
+              <div className="space-y-2 text-sm text-gray-700">
+                {selectedTour.itinerary.map((day) => (
+                  <div key={day} className="rounded-xl bg-gray-50 px-4 py-3">{day}</div>
+                ))}
+              </div>
             </div>
             <a href={selectedTour.bookingUrl} target="_blank" rel="noopener noreferrer" className="inline-flex bg-primary text-white px-5 py-3 rounded-xl font-semibold">
               Book on YouthCamping
