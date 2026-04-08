@@ -16,6 +16,8 @@ type Tour = {
   destination: string[];
   images: string[];
   bookingUrl: string;
+  overview: string;
+  highlights: string[];
 };
 
 const allTours: Tour[] = [
@@ -28,6 +30,8 @@ const allTours: Tour[] = [
     originalPrice: 11999,
     destination: ["manali", "kasol"],
     bookingUrl: "https://www.youthcamping.in/tours/manali-kasol-amritsar-adventure-trip-140500",
+    overview: "Get ready for an unforgettable journey through Northern India. Explore the Golden Temple, Kasol riverside camping, Manikaran Gurudwara, Bijli Mahadev trek, and the best of Manali.",
+    highlights: ["Jalandhar train journey", "Wagah Border", "Golden Temple", "Kasol market", "Manikaran", "Manali", "Solang Valley"],
     images: [
       `${CDN}/000/888/076/6f012c2f939c45fd491d86b3d33b0cbb/x540gt/IMG_3309.jpg`,
       `${CDN}/000/748/614/9b56160b1abe219a402c11001702ae24/x540gt/IMG_3398.JPG`,
@@ -43,6 +47,8 @@ const allTours: Tour[] = [
     originalPrice: 11999,
     destination: ["manali", "kasol"],
     bookingUrl: "https://www.youthcamping.in/tours/manali-kasol-amritsar-trip-137683",
+    overview: "A fun backpacking trip through Amritsar, Kasol, and Manali with scenic spots, guided activities, and a packed mountain experience.",
+    highlights: ["Amritsar", "Kasol", "Chalal Village", "Vashisht Hot Springs", "Solang Valley", "Manali Mall Road"],
     images: [
       `${CDN}/000/748/614/9b56160b1abe219a402c11001702ae24/x540gt/IMG_3398.JPG`,
       `${CDN}/000/748/611/6293bbb8cff91918ba4aea8025dca151/x540gt/IMG_3359.JPG`,
@@ -58,6 +64,8 @@ const allTours: Tour[] = [
     originalPrice: 12999,
     destination: ["manali", "shimla"],
     bookingUrl: "https://www.youthcamping.in/tours/shimla-manali-kullu-138567",
+    overview: "A classic Himachal trip with Shimla charm, Manali sightseeing, and Kullu adventure.",
+    highlights: ["Shimla", "Manali", "Kullu rafting", "Hadimba Temple", "Mall Road"],
     images: [
       `${CDN}/000/795/284/3bba832671671da87e0f23ce9864e6c1/x540gt/27121997__26_.jpg`,
       `${CDN}/000/750/627/c9e426f29444d71754171e3f6c9081c8/x540gt/Untitled_design__18_.png`,
@@ -73,6 +81,8 @@ const allTours: Tour[] = [
     originalPrice: 16999,
     destination: ["manali", "shimla"],
     bookingUrl: "https://www.youthcamping.in/tours/shimla-manali-dalhousie-dharamshala-155815",
+    overview: "Explore Shimla, Manali, Dharamshala, and Dalhousie in one scenic mountain journey.",
+    highlights: ["Shimla", "Manali", "Dharamshala", "Dalhousie", "Mcleod Ganj"],
     images: [
       `${CDN}/000/856/207/68ae0d6c7bcc0a7716d1c860e7f2c58d/original/42294194395`,
       `${CDN}/000/795/284/3bba832671671da87e0f23ce9864e6c1/x540gt/27121997__26_.jpg`,
@@ -87,6 +97,8 @@ const allTours: Tour[] = [
     originalPrice: 19999,
     destination: ["spiti"],
     bookingUrl: "https://www.youthcamping.in/tours/winter-spiti-156526",
+    overview: "A winter wonderland journey through Spiti with snow-covered villages, frozen rivers, and peaceful Himalayan views.",
+    highlights: ["Kaza", "Key Monastery", "Frozen rivers", "Snow villages", "Spiti Valley"],
     images: [
       `${CDN}/000/862/062/b7cb9dc7ccc9fe863f0f009c4fe1746f/x540gt/Website_Itinerary_Ohotos__2_.png`,
       `${CDN}/000/862/060/5d50edec4e8decdefec9e352873b99e8/x540gt/Website_Itinerary_Ohotos__4_.png`,
@@ -104,6 +116,8 @@ const allTours: Tour[] = [
     originalPrice: 21499,
     destination: ["spiti"],
     bookingUrl: "https://www.youthcamping.in/tours/spiti-valley-road-trip-137856",
+    overview: "Experience the raw beauty of Himachal with Sangla, Chitkul, Kaza, Chandrataal Lake, and Manali.",
+    highlights: ["Sangla", "Chitkul", "Tabo", "Kaza", "Hikkim", "Langza", "Chandrataal Lake"],
     images: [
       `${CDN}/000/751/384/13bebee8f5dfb67ee1756619de11e44a/x540gt/Untitled_design__50_.png`,
       `${CDN}/000/751/383/f9e9b476346ed8ae84d29f5837f6e093/x540gt/Untitled_design__51_.png`,
@@ -121,6 +135,8 @@ const allTours: Tour[] = [
     originalPrice: 18999,
     destination: ["ladakh"],
     bookingUrl: "https://www.youthcamping.in/tours/leh-to-leh-bike-expedition-2026-youth-camping-164365",
+    overview: "A thrilling bike expedition through Ladakh, covering high passes, Nubra Valley, Turtuk, and Pangong Lake.",
+    highlights: ["Leh", "Khardung La", "Nubra Valley", "Turtuk", "Pangong Lake"],
     images: [
       `${CDN}/000/888/077/e84148f8d1adacaa5dc96e8f834b8cdd/x540gt/t2-graphy-IJfpVYlRv5I-unsplash.jpg`,
       `${CDN}/000/888/133/bae231ef3cdd69e7dc0d467e3ba04cbe/x540gt/Website_Itinerary_Ohotos__4_.jpg`,
@@ -138,6 +154,8 @@ const allTours: Tour[] = [
     originalPrice: 19499,
     destination: ["kedarnath"],
     bookingUrl: "https://www.youthcamping.in/tours/kedarnath-tungnath-rishikesh-multiple-starting-points-as-addons-138288",
+    overview: "A spiritual Himalayan journey covering Kedarnath, Badrinath, Tungnath, and Rishikesh.",
+    highlights: ["Kedarnath", "Badrinath", "Tungnath", "Rishikesh", "Ganga Aarti"],
     images: [
       `${CDN}/000/748/925/95ce9359f68bd2d93dee6aa2e3a18d17/x540gt/Untitled_design__11_.png`,
       `${CDN}/000/748/920/5abeca5343adce67a22013a929647f71/x540gt/Untitled_design__12_.png`,
@@ -153,6 +171,8 @@ const allTours: Tour[] = [
     originalPrice: 16500,
     destination: ["kedarnath"],
     bookingUrl: "https://www.youthcamping.in/tours/kedarnath-tungnath-rishikesh-backpacking-trip",
+    overview: "An immersive Uttarakhand trip with sacred temples, river towns, and mountain views.",
+    highlights: ["Haridwar", "Rishikesh", "Chopta", "Kedarnath", "Tungnath"],
     images: [
       `${CDN}/000/748/931/95ce9359f68bd2d93dee6aa2e3a18d17/x540gt/Untitled_design__11_.png`,
       `${CDN}/000/748/926/5abeca5343adce67a22013a929647f71/x540gt/Untitled_design__12_.png`,
@@ -168,6 +188,8 @@ const allTours: Tour[] = [
     originalPrice: 15999,
     destination: ["kerala"],
     bookingUrl: "https://www.youthcamping.in/tours/kerala-getaway-165724",
+    overview: "A relaxing South India trip through Kerala's green hills, backwaters, and coastal beauty.",
+    highlights: ["Munnar", "Alleppey", "Wayanad", "Kochi", "Backwaters"],
     images: [
       `${CDN}/000/899/117/e79b48de54e83646c865c90dee281eb2/x540gt/ravi-sangar-dfB4L6PfS4w-unsplash__1_.jpg`,
     ],
@@ -281,18 +303,29 @@ function Home() {
 
       {selectedTour && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setSelectedTour(null)}>
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-0 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="relative h-64">
+              <img src={selectedTour.images[0]} alt={selectedTour.title} className="w-full h-full object-cover" />
+              <button className="absolute top-4 right-4 bg-white/90 rounded-full w-9 h-9 text-gray-700" onClick={() => setSelectedTour(null)}>✕</button>
+            </div>
+            <div className="p-6">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div>
                 <h3 className="text-2xl font-bold text-gray-900">{selectedTour.title}</h3>
                 <p className="text-gray-500">{selectedTour.subtitle}</p>
               </div>
-              <button className="text-gray-500" onClick={() => setSelectedTour(null)}>✕</button>
             </div>
             <p className="text-sm text-gray-600 mb-4">{selectedTour.duration} • ₹{selectedTour.price.toLocaleString("en-IN")} per person</p>
+            <p className="text-sm text-gray-700 mb-4">{selectedTour.overview}</p>
+            <div className="flex flex-wrap gap-2 mb-5">
+              {selectedTour.highlights.map((item) => (
+                <span key={item} className="px-3 py-1 rounded-full bg-gray-100 text-xs font-medium text-gray-700">{item}</span>
+              ))}
+            </div>
             <a href={selectedTour.bookingUrl} target="_blank" rel="noopener noreferrer" className="inline-flex bg-primary text-white px-5 py-3 rounded-xl font-semibold">
               Book on YouthCamping
             </a>
+            </div>
           </div>
         </div>
       )}
