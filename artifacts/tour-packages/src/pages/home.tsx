@@ -225,6 +225,7 @@ function toursForTab(tab: string): { sectionTitle: string; tours: Tour[] }[] {
 function Home() {
   const [activeTab, setActiveTab] = useState("all");
   const pageSections = toursForTab(activeTab);
+  const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
 
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: "Poppins, sans-serif" }}>
@@ -261,13 +262,7 @@ function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {allTours.map((tour) => (
-              <a
-                key={tour.id}
-                href={tour.bookingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block no-underline"
-              >
+              <button key={tour.id} onClick={() => setSelectedTour(tour)} className="block w-full text-left">
                 <TourCard
                   id={tour.id}
                   title={tour.title}
@@ -278,11 +273,29 @@ function Home() {
                   images={tour.images}
                   destination={tour.destination[0]}
                 />
-              </a>
+              </button>
             ))}
           </div>
         </section>
       </main>
+
+      {selectedTour && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setSelectedTour(null)}>
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">{selectedTour.title}</h3>
+                <p className="text-gray-500">{selectedTour.subtitle}</p>
+              </div>
+              <button className="text-gray-500" onClick={() => setSelectedTour(null)}>✕</button>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">{selectedTour.duration} • ₹{selectedTour.price.toLocaleString("en-IN")} per person</p>
+            <a href={selectedTour.bookingUrl} target="_blank" rel="noopener noreferrer" className="inline-flex bg-primary text-white px-5 py-3 rounded-xl font-semibold">
+              Book on YouthCamping
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white">
