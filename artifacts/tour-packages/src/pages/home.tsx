@@ -4,271 +4,15 @@ import { Navbar } from "@/components/navbar";
 import { DestinationTabs } from "@/components/destination-tabs";
 import { TourCard } from "@/components/tour-card";
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
-
-const CDN = "https://vl-prod-static.b-cdn.net/system/images";
-
-type Tour = {
-  id: string;
-  title: string;
-  subtitle: string;
-  duration: string;
-  price: number;
-  originalPrice: number;
-  destination: string[];
-  images: string[];
-  bookingUrl: string;
-  overview: string;
-  highlights: string[];
-  itinerary: string[];
-};
-
-const allTours: Tour[] = [
-  {
-    id: "manali-kasol-1",
-    title: "Manali Kasol Amritsar Backpacking Trip",
-    subtitle: "Wagah Border · Golden Temple · Bijli Mahadev Trek",
-    duration: "8 Nights 9 Days",
-    price: 11999,
-    originalPrice: 11999,
-    destination: ["manali", "kasol"],
-    bookingUrl: "https://www.youthcamping.in/tours/manali-kasol-amritsar-adventure-trip-140500",
-    overview: "Get ready for an unforgettable journey through Northern India. Explore the Golden Temple, Kasol riverside camping, Manikaran Gurudwara, Bijli Mahadev trek, and the best of Manali.",
-    highlights: ["Jalandhar train journey", "Wagah Border", "Golden Temple", "Kasol market", "Manikaran", "Manali", "Solang Valley"],
-    itinerary: [
-      "Day 1: Train journey from Ahmedabad/Vadodara/Surat to Jalandhar/Una",
-      "Day 2: Amritsar sightseeing and Wagah Border",
-      "Day 3: Kasol riverside stay and market",
-      "Day 4: Manikaran Gurudwara and Chalal village",
-      "Day 5: Manali arrival and local sightseeing",
-      "Day 6: Solang Valley and Atal Tunnel",
-      "Day 7: Sissu and Kullu rafting",
-      "Day 8: Return journey",
-    ],
-    images: [
-      `${CDN}/000/888/076/6f012c2f939c45fd491d86b3d33b0cbb/x540gt/IMG_3309.jpg`,
-      `${CDN}/000/748/614/9b56160b1abe219a402c11001702ae24/x540gt/IMG_3398.JPG`,
-      `${CDN}/000/748/611/6293bbb8cff91918ba4aea8025dca151/x540gt/IMG_3359.JPG`,
-    ],
-  },
-  {
-    id: "manali-kasol-summer",
-    title: "Manali Kasol Amritsar Trip (Summer 2026)",
-    subtitle: "Vashisht Hot Springs · Solang Valley · Chalal Village",
-    duration: "8 Nights 9 Days",
-    price: 11999,
-    originalPrice: 11999,
-    destination: ["manali", "kasol"],
-    bookingUrl: "https://www.youthcamping.in/tours/manali-kasol-amritsar-trip-137683",
-    overview: "A fun backpacking trip through Amritsar, Kasol, and Manali with scenic spots, guided activities, and a packed mountain experience.",
-    highlights: ["Amritsar", "Kasol", "Chalal Village", "Vashisht Hot Springs", "Solang Valley", "Manali Mall Road"],
-    itinerary: ["Day 1: Departure", "Day 2: Amritsar", "Day 3: Kasol", "Day 4: Manali", "Day 5: Solang Valley", "Day 6: Leisure and return"],
-    images: [
-      `${CDN}/000/748/614/9b56160b1abe219a402c11001702ae24/x540gt/IMG_3398.JPG`,
-      `${CDN}/000/748/611/6293bbb8cff91918ba4aea8025dca151/x540gt/IMG_3359.JPG`,
-      `${CDN}/000/748/612/fea69680cd85a1e40d4f3643574c89af/x540gt/IMG_3326.JPG`,
-    ],
-  },
-  {
-    id: "shimla-manali-kullu",
-    title: "Shimla Manali Kullu",
-    subtitle: "Mall Road · Hadimba Temple · Kullu Rafting",
-    duration: "7 Nights 8 Days",
-    price: 12999,
-    originalPrice: 12999,
-    destination: ["manali", "shimla"],
-    bookingUrl: "https://www.youthcamping.in/tours/shimla-manali-kullu-138567",
-    overview: "A classic Himachal trip with Shimla charm, Manali sightseeing, and Kullu adventure.",
-    highlights: ["Shimla", "Manali", "Kullu rafting", "Hadimba Temple", "Mall Road"],
-    itinerary: ["Day 1: Arrival", "Day 2: Shimla", "Day 3: Manali", "Day 4: Local sightseeing", "Day 5: Kullu rafting", "Day 6: Return"],
-    images: [
-      `${CDN}/000/795/284/3bba832671671da87e0f23ce9864e6c1/x540gt/27121997__26_.jpg`,
-      `${CDN}/000/750/627/c9e426f29444d71754171e3f6c9081c8/x540gt/Untitled_design__18_.png`,
-      `${CDN}/000/750/628/e1eea3594999b766f2e8a399debb52d2/x540gt/Untitled_design__21_.png`,
-    ],
-  },
-  {
-    id: "shimla-manali-dalhousie",
-    title: "Shimla Manali Dalhousie Dharamshala",
-    subtitle: "Colonial Shimla · Snowy Manali · Mcleod Ganj",
-    duration: "9 Nights 10 Days",
-    price: 16999,
-    originalPrice: 16999,
-    destination: ["manali", "shimla"],
-    bookingUrl: "https://www.youthcamping.in/tours/shimla-manali-dalhousie-dharamshala-155815",
-    overview: "Explore Shimla, Manali, Dharamshala, and Dalhousie in one scenic mountain journey.",
-    highlights: ["Shimla", "Manali", "Dharamshala", "Dalhousie", "Mcleod Ganj"],
-    itinerary: ["Day 1: Departure", "Day 2: Shimla", "Day 3: Manali", "Day 4: Dharamshala", "Day 5: Dalhousie", "Day 6: Return"],
-    images: [
-      `${CDN}/000/856/207/68ae0d6c7bcc0a7716d1c860e7f2c58d/original/42294194395`,
-      `${CDN}/000/795/284/3bba832671671da87e0f23ce9864e6c1/x540gt/27121997__26_.jpg`,
-    ],
-  },
-  {
-    id: "winter-spiti",
-    title: "Winter Spiti Road Trip",
-    subtitle: "Frozen Rivers · Snow-covered Villages · Key Monastery",
-    duration: "9 Nights 10 Days",
-    price: 19999,
-    originalPrice: 19999,
-    destination: ["spiti"],
-    bookingUrl: "https://www.youthcamping.in/tours/winter-spiti-156526",
-    overview: "A winter wonderland journey through Spiti with snow-covered villages, frozen rivers, and peaceful Himalayan views.",
-    highlights: ["Kaza", "Key Monastery", "Frozen rivers", "Snow villages", "Spiti Valley"],
-    itinerary: ["Day 1: Train to Chandigarh", "Day 2: Shimla drive", "Day 3: Sangla", "Day 4: Kalpa", "Day 5: Kaza", "Day 6: Key Monastery", "Day 7: Return"],
-    images: [
-      `${CDN}/000/862/062/b7cb9dc7ccc9fe863f0f009c4fe1746f/x540gt/Website_Itinerary_Ohotos__2_.png`,
-      `${CDN}/000/862/060/5d50edec4e8decdefec9e352873b99e8/x540gt/Website_Itinerary_Ohotos__4_.png`,
-      `${CDN}/000/862/061/9b72e8a2d0b5f7708ed73d1c712eed1a/x540gt/Website_Itinerary_Ohotos__3_.png`,
-      `${CDN}/000/862/064/e80df5925dd74919f520937e2a6bda8f/x540gt/Website_Itinerary_Ohotos.png`,
-      `${CDN}/000/862/067/098b53266d5d6f407b3eb0f6b798f8dc/x540gt/Website_Itinerary_Ohotos__5_.png`,
-    ],
-  },
-  {
-    id: "spiti-valley",
-    title: "Spiti Valley Road Trip",
-    subtitle: "Sangla · Chitkul · Chandrataal Lake · Kaza",
-    duration: "10 Nights 11 Days",
-    price: 21499,
-    originalPrice: 21499,
-    destination: ["spiti"],
-    bookingUrl: "https://www.youthcamping.in/tours/spiti-valley-road-trip-137856",
-    overview: "Experience the raw beauty of Himachal with Sangla, Chitkul, Kaza, Chandrataal Lake, and Manali.",
-    highlights: ["Sangla", "Chitkul", "Tabo", "Kaza", "Hikkim", "Langza", "Chandrataal Lake"],
-    itinerary: ["Day 1: Ahmedabad to Chandigarh", "Day 2: Drive to Shimla", "Day 3: Sangla", "Day 4: Chitkul", "Day 5: Kaza", "Day 6: Chandrataal", "Day 7: Manali", "Day 8: Return"],
-    images: [
-      `${CDN}/000/751/384/13bebee8f5dfb67ee1756619de11e44a/x540gt/Untitled_design__50_.png`,
-      `${CDN}/000/751/383/f9e9b476346ed8ae84d29f5837f6e093/x540gt/Untitled_design__51_.png`,
-      `${CDN}/000/751/385/0b859075c5accb9bb1decb348aa419ad/x540gt/Untitled_design__49_.png`,
-      `${CDN}/000/751/386/a0218b14753015027900b134d4aa3a95/x540gt/Untitled_design__48_.png`,
-      `${CDN}/000/751/387/779ac1dc6dbfb5b09f1e80da0a3a0325/x540gt/Untitled_design__47_.png`,
-    ],
-  },
-  {
-    id: "leh-ladakh-bike",
-    title: "Leh Ladakh Bike Expedition 2026",
-    subtitle: "Khardung La · Nubra Valley · Turtuk · Pangong Lake",
-    duration: "6 Nights 7 Days",
-    price: 18999,
-    originalPrice: 18999,
-    destination: ["ladakh"],
-    bookingUrl: "https://www.youthcamping.in/tours/leh-to-leh-bike-expedition-2026-youth-camping-164365",
-    overview: "A thrilling bike expedition through Ladakh, covering high passes, Nubra Valley, Turtuk, and Pangong Lake.",
-    highlights: ["Leh", "Khardung La", "Nubra Valley", "Turtuk", "Pangong Lake"],
-    itinerary: ["Day 1: Arrive Leh", "Day 2: Acclimatization", "Day 3: Nubra Valley", "Day 4: Turtuk", "Day 5: Pangong Lake", "Day 6: Leh local", "Day 7: Departure"],
-    images: [
-      `${CDN}/000/888/077/e84148f8d1adacaa5dc96e8f834b8cdd/x540gt/t2-graphy-IJfpVYlRv5I-unsplash.jpg`,
-      `${CDN}/000/888/133/bae231ef3cdd69e7dc0d467e3ba04cbe/x540gt/Website_Itinerary_Ohotos__4_.jpg`,
-      `${CDN}/000/888/134/10b5d1ede53e33bb93e210e4846fcec9/x540gt/Website_Itinerary_Ohotos__3_.jpg`,
-      `${CDN}/000/888/135/4aa2a2c0426f7d3274b80929e939eec6/x540gt/Website_Itinerary_Ohotos__2_.jpg`,
-      `${CDN}/000/888/136/64717d607b65d3efbf804a96b4e8732b/x540gt/Website_Itinerary_Ohotos__1_.jpg`,
-    ],
-  },
-  {
-    id: "kedarnath-badrinath",
-    title: "Kedarnath Badrinath – Tungnath & Rishikesh",
-    subtitle: "Char Dham · Panch Kedar · Ganga Aarti · Bungee",
-    duration: "8 Nights 7 Days",
-    price: 19499,
-    originalPrice: 19499,
-    destination: ["kedarnath"],
-    bookingUrl: "https://www.youthcamping.in/tours/kedarnath-tungnath-rishikesh-multiple-starting-points-as-addons-138288",
-    overview: "A spiritual Himalayan journey covering Kedarnath, Badrinath, Tungnath, and Rishikesh.",
-    highlights: ["Kedarnath", "Badrinath", "Tungnath", "Rishikesh", "Ganga Aarti"],
-    itinerary: ["Day 1: Haridwar/Rishikesh", "Day 2: Guptkashi", "Day 3: Kedarnath", "Day 4: Badrinath", "Day 5: Tungnath", "Day 6: Rishikesh", "Day 7: Return"],
-    images: [
-      `${CDN}/000/748/925/95ce9359f68bd2d93dee6aa2e3a18d17/x540gt/Untitled_design__11_.png`,
-      `${CDN}/000/748/920/5abeca5343adce67a22013a929647f71/x540gt/Untitled_design__12_.png`,
-      `${CDN}/000/748/921/30e9ea2cafbd0b433acdf1c21b6d3e0c/x540gt/Untitled_design__13_.png`,
-    ],
-  },
-  {
-    id: "kedarnath-tungnath",
-    title: "Kedarnath Tungnath & Rishikesh Trip",
-    subtitle: "Har ki Pauri · Laxman Jhula · Chopta Meadows",
-    duration: "5 Nights 6 Days",
-    price: 16500,
-    originalPrice: 16500,
-    destination: ["kedarnath"],
-    bookingUrl: "https://www.youthcamping.in/tours/kedarnath-tungnath-rishikesh-backpacking-trip",
-    overview: "An immersive Uttarakhand trip with sacred temples, river towns, and mountain views.",
-    highlights: ["Haridwar", "Rishikesh", "Chopta", "Kedarnath", "Tungnath"],
-    itinerary: ["Day 1: Delhi departure", "Day 2: Haridwar", "Day 3: Rishikesh", "Day 4: Chopta", "Day 5: Tungnath", "Day 6: Return"],
-    images: [
-      `${CDN}/000/748/931/95ce9359f68bd2d93dee6aa2e3a18d17/x540gt/Untitled_design__11_.png`,
-      `${CDN}/000/748/926/5abeca5343adce67a22013a929647f71/x540gt/Untitled_design__12_.png`,
-      `${CDN}/000/748/927/30e9ea2cafbd0b433acdf1c21b6d3e0c/x540gt/Untitled_design__13_.png`,
-    ],
-  },
-  {
-    id: "kerala-getaway",
-    title: "Kerala Getaway",
-    subtitle: "Munnar · Alleppey Backwaters · Wayanad · Kochi",
-    duration: "4 Nights 5 Days",
-    price: 15999,
-    originalPrice: 15999,
-    destination: ["kerala"],
-    bookingUrl: "https://www.youthcamping.in/tours/kerala-getaway-165724",
-    overview: "A relaxing South India trip through Kerala's green hills, backwaters, and coastal beauty.",
-    highlights: ["Munnar", "Alleppey", "Wayanad", "Kochi", "Backwaters"],
-    itinerary: ["Day 1: Kochi arrival", "Day 2: Munnar", "Day 3: Thekkady", "Day 4: Alleppey", "Day 5: Return"],
-    images: [
-      `${CDN}/000/899/117/e79b48de54e83646c865c90dee281eb2/x540gt/ravi-sangar-dfB4L6PfS4w-unsplash__1_.jpg`,
-    ],
-  },
-];
-
-const sections = [
-  {
-    id: "top-selling",
-    title: "Top Selling Group Trips",
-    filterIds: ["manali-kasol-1", "winter-spiti", "kedarnath-badrinath", "leh-ladakh-bike", "spiti-valley"],
-  },
-  {
-    id: "manali",
-    title: "Manali & Himachal Pradesh",
-    tags: ["manali"],
-  },
-  {
-    id: "spiti",
-    title: "Spiti Valley",
-    tags: ["spiti"],
-  },
-  {
-    id: "ladakh",
-    title: "Leh Ladakh",
-    tags: ["ladakh"],
-  },
-  {
-    id: "kedarnath",
-    title: "Kedarnath & Rishikesh",
-    tags: ["kedarnath"],
-  },
-  {
-    id: "kerala",
-    title: "South India – Kerala",
-    tags: ["kerala"],
-  },
-];
-
-function toursForTab(tab: string): { sectionTitle: string; tours: Tour[] }[] {
-  if (tab === "all") {
-    return sections.map((sec) => {
-      const tours = sec.filterIds
-        ? allTours.filter((t) => sec.filterIds!.includes(t.id))
-        : allTours.filter((t) => sec.tags!.some((tag) => t.destination.includes(tag)));
-      return { sectionTitle: sec.title, tours };
-    }).filter((s) => s.tours.length > 0);
-  }
-  const tours = allTours.filter((t) => t.destination.includes(tab));
-  if (!tours.length) return [];
-  const sec = sections.find((s) => s.tags?.includes(tab));
-  return [{ sectionTitle: sec?.title ?? "Tour Packages", tours }];
-}
+import { allTours } from "@/data/tours";
 
 function Home() {
   const [activeTab, setActiveTab] = useState("all");
-  const pageSections = toursForTab(activeTab);
-  const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
+
+  const visibleTours =
+    activeTab === "all"
+      ? allTours
+      : allTours.filter((t) => t.destination.includes(activeTab));
 
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: "Poppins, sans-serif" }}>
@@ -287,85 +31,44 @@ function Home() {
             Discover Your Next<br />Adventure
           </h1>
           <p className="text-white/80 text-base md:text-lg mb-6 font-medium">"One Trip at a Time"</p>
-          <a
-            href="https://www.youthcamping.in/collections/tours"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setActiveTab("all")}
             className="bg-primary hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm shadow-lg"
           >
             Explore Now
-          </a>
+          </button>
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-6 py-10 space-y-14">
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900">All Trips</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {allTours.map((tour) => (
-              <button key={tour.id} onClick={() => setSelectedTour(tour)} className="block w-full text-left">
-                <Link href={`/tours/${tour.id}`}>
-                  <TourCard
-                    id={tour.id}
-                    title={tour.title}
-                    subtitle={tour.subtitle}
-                    duration={tour.duration}
-                    price={tour.price}
-                    originalPrice={tour.originalPrice}
-                    images={tour.images}
-                    destination={tour.destination[0]}
-                  />
-                </Link>
-              </button>
-            ))}
-          </div>
-        </section>
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+            {activeTab === "all" ? "All Trips" : `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Trips`}
+            <span className="ml-2 text-sm font-normal text-gray-400">({visibleTours.length} trips)</span>
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {visibleTours.map((tour) => (
+            <Link key={tour.id} href={`/tours/${tour.id}`}>
+              <TourCard
+                id={tour.id}
+                title={tour.title}
+                subtitle={tour.subtitle}
+                duration={tour.duration}
+                price={tour.price}
+                originalPrice={tour.originalPrice}
+                images={tour.images}
+                destination={tour.destination[0]}
+              />
+            </Link>
+          ))}
+        </div>
       </main>
 
-      {selectedTour && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setSelectedTour(null)}>
-          <div className="bg-white rounded-3xl max-w-3xl w-full p-0 overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <div className="relative h-64">
-              <img src={selectedTour.images[0]} alt={selectedTour.title} className="w-full h-full object-cover" />
-              <button className="absolute top-4 right-4 bg-white/90 rounded-full w-9 h-9 text-gray-700" onClick={() => setSelectedTour(null)}>✕</button>
-            </div>
-            <div className="p-6">
-            <div className="flex items-start justify-between gap-4 mb-4">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900">{selectedTour.title}</h3>
-                <p className="text-gray-500">{selectedTour.subtitle}</p>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 mb-4">{selectedTour.duration} • ₹{selectedTour.price.toLocaleString("en-IN")} per person</p>
-            <p className="text-sm text-gray-700 mb-4">{selectedTour.overview}</p>
-            <div className="flex flex-wrap gap-2 mb-5">
-              {selectedTour.highlights.map((item) => (
-                <span key={item} className="px-3 py-1 rounded-full bg-gray-100 text-xs font-medium text-gray-700">{item}</span>
-              ))}
-            </div>
-            <div className="mb-5">
-              <h4 className="font-semibold text-gray-900 mb-2">Itinerary</h4>
-              <div className="space-y-2 text-sm text-gray-700">
-                {selectedTour.itinerary.map((day) => (
-                  <div key={day} className="rounded-xl bg-gray-50 px-4 py-3">{day}</div>
-                ))}
-              </div>
-            </div>
-            <a href={selectedTour.bookingUrl} target="_blank" rel="noopener noreferrer" className="inline-flex bg-primary text-white px-5 py-3 rounded-xl font-semibold">
-              Book on YouthCamping
-            </a>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Footer */}
-      <footer className="bg-gray-900 text-white">
+      <footer className="bg-gray-900 text-white mt-12">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-            {/* Brand */}
             <div className="md:col-span-1">
               <div className="text-xl font-bold mb-3">
                 <span className="text-primary">Youth</span>Camping
@@ -382,7 +85,6 @@ function Home() {
               </div>
             </div>
 
-            {/* Quick Links */}
             <div>
               <h4 className="font-semibold text-sm text-gray-300 uppercase tracking-wider mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -392,7 +94,6 @@ function Home() {
               </ul>
             </div>
 
-            {/* Destinations */}
             <div>
               <h4 className="font-semibold text-sm text-gray-300 uppercase tracking-wider mb-4">Destinations</h4>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -402,7 +103,6 @@ function Home() {
               </ul>
             </div>
 
-            {/* Contact */}
             <div>
               <h4 className="font-semibold text-sm text-gray-300 uppercase tracking-wider mb-4">Contact Us</h4>
               <ul className="space-y-3 text-sm text-gray-400">
@@ -418,9 +118,7 @@ function Home() {
                   <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
                   <span>Ahmedabad, Gujarat, India</span>
                 </li>
-                <li className="flex items-start gap-2 mt-1">
-                  <span className="text-gray-500 text-xs">Available 10AM – 7PM</span>
-                </li>
+                <li className="text-xs text-gray-500">Available 10AM – 7PM</li>
               </ul>
             </div>
           </div>

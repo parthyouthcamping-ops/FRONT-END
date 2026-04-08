@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Clock, Tag } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Tag, ArrowRight } from "lucide-react";
 
 interface TourCardProps {
   id: string;
@@ -38,11 +38,9 @@ export function TourCard({
   return (
     <div
       className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 cursor-pointer group"
-      data-testid={`card-tour-${title.toLowerCase().replace(/\s+/g, '-')}`}
     >
       {/* Image Slider */}
       <div className="relative h-52 overflow-hidden bg-gray-100">
-        {/* Images */}
         <div
           className="flex h-full transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentImg * 100}%)` }}
@@ -67,20 +65,22 @@ export function TourCard({
         {/* Prev/Next arrows */}
         {images.length > 1 && (
           <>
-            <button
+            <div
+              role="button"
               onClick={prev}
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow rounded-full w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
               aria-label="Previous photo"
             >
               <ChevronLeft className="w-4 h-4 text-gray-800" />
-            </button>
-            <button
+            </div>
+            <div
+              role="button"
               onClick={next}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow rounded-full w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
               aria-label="Next photo"
             >
               <ChevronRight className="w-4 h-4 text-gray-800" />
-            </button>
+            </div>
           </>
         )}
 
@@ -88,10 +88,11 @@ export function TourCard({
         {images.length > 1 && (
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
             {images.map((_, i) => (
-              <button
+              <div
                 key={i}
+                role="button"
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); setCurrentImg(i); }}
-                className={`rounded-full transition-all ${
+                className={`rounded-full transition-all cursor-pointer ${
                   i === currentImg ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/60"
                 }`}
                 aria-label={`Go to photo ${i + 1}`}
@@ -103,7 +104,6 @@ export function TourCard({
 
       {/* Card Content */}
       <div className="p-4">
-        {/* Title */}
         <div className="mb-3">
           <h3 className="text-sm font-bold text-gray-900 leading-snug" style={{ fontFamily: 'Poppins, sans-serif' }}>
             {title}
@@ -113,10 +113,8 @@ export function TourCard({
           )}
         </div>
 
-        {/* Price Row */}
         <div className="flex items-center justify-between">
           <div>
-            {/* Save badge */}
             {savings > 0 && (
               <div className="flex items-center gap-1 mb-1">
                 <Tag className="w-3 h-3 text-primary" />
@@ -138,12 +136,10 @@ export function TourCard({
             <p className="text-xs text-gray-400">per person</p>
           </div>
 
-          <button
-            className="bg-primary text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
-            data-testid={`button-book-${title.toLowerCase().replace(/\s+/g, '-')}`}
-          >
-            Book Now
-          </button>
+          <div className="bg-primary text-white text-xs font-semibold px-3 py-2 rounded-lg flex items-center gap-1 group-hover:bg-red-600 transition-colors">
+            View Details
+            <ArrowRight className="w-3 h-3" />
+          </div>
         </div>
       </div>
     </div>
