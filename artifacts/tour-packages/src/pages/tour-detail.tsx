@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useParams, Link } from "wouter";
 import { allTours } from "@/data/tours";
 import { Navbar } from "@/components/navbar";
@@ -28,10 +28,13 @@ export default function TourDetail() {
   const tour = allTours.find((t) => t.id === id);
 
   const [activeImg, setActiveImg] = useState(0);
+  const [heroHovered, setHeroHovered] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [liked, setLiked] = useState(false);
+  const heroTouchStartX = useRef(0);
+  const heroAutoRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const overviewRef = useRef<HTMLDivElement>(null);
   const itineraryRef = useRef<HTMLDivElement>(null);
@@ -44,6 +47,22 @@ export default function TourDetail() {
     inclusions: inclusionsRef,
     faqs: faqsRef,
   };
+
+  const heroGo = useCallback((dir: 1 | -1) => {
+    if (!tour) return;
+    setActiveImg((i) => (i + dir + tour.images.length) % tour.images.length);
+  }, [tour]);
+
+  useEffect(() => {
+    if (!tour || tour.images.length <= 1 || heroHovered) {
+      if (heroAutoRef.current) clearInterval(heroAutoRef.current);
+      return;
+    }
+    heroAutoRef.current = setInterval(() => {
+      setActiveImg((i) => (i + 1) % tour.images.length);
+    }, 4000);
+    return () => { if (heroAutoRef.current) clearInterval(heroAutoRef.current); };
+  }, [heroHovered, tour]);
 
   const scrollToTab = (tabId: string) => {
     setActiveTab(tabId);
@@ -96,49 +115,73 @@ export default function TourDetail() {
       {/* ── HERO GALLERY ── */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 mb-0">
         <div className="relative">
-          {/* Main hero image */}
-          <div className="relative h-[340px] md:h-[440px] rounded-2xl overflow-hidden bg-gray-200 group cursor-pointer" onClick={() => setGalleryOpen(true)}>
-            <img
-              src={tour.images[activeImg]}
-              alt={tour.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+          {/* Main hero image — crossfade slider */}
+          <div
+            className="relative h-[340px] md:h-[460px] rounded-2xl overflow-hidden bg-gray-200 group cursor-pointer select-none"
+            onMouseEnter={() => setHeroHovered(true)}
+            onMouseLeave={() => setHeroHovered(false)}
+            onTouchStart={(e) => { heroTouchStartX.current = e.touches[0].clientX; }}
+            onTouchEnd={(e) => {
+              const diff = heroTouchStartX.current - e.changedTouches[0].clientX;
+              if (Math.abs(diff) > 50) heroGo(diff > 0 ? 1 : -1);
+            }}
+            onClick={() => setGalleryOpen(true)}
+          >
+            {/* Crossfade images */}
+            {tour.images.map((src, i) => (
+              <div
+                key={i}
+                className="absolute inset-0 transition-opacity duration-700 ease-in-out"
+                style={{ opacity: i === activeImg ? 1 : 0, zIndex: i === activeImg ? 1 : 0 }}
+              >
+                <img
+                  src={src}
+                  alt={`${tour.title} ${i + 1}`}
+                  className={`w-full h-full object-cover transition-transform duration-[8000ms] ease-linear ${i === activeImg ? "scale-110" : "scale-100"}`}
+                  draggable={false}
+                />
+              </div>
+            ))}
 
-            {/* Image nav arrows */}
+            {/* Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent z-10 pointer-events-none" />
+
+            {/* Arrows */}
             {tour.images.length > 1 && (
               <>
                 <button
-                  onClick={(e) => { e.stopPropagation(); setActiveImg((i) => (i === 0 ? tour.images.length - 1 : i - 1)); }}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/85 hover:bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all"
+                  onClick={(e) => { e.stopPropagation(); heroGo(-1); }}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-white/85 hover:bg-white shadow-lg rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
                 >
                   <ChevronLeft className="w-5 h-5 text-gray-800" />
                 </button>
                 <button
-                  onClick={(e) => { e.stopPropagation(); setActiveImg((i) => (i === tour.images.length - 1 ? 0 : i + 1)); }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/85 hover:bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all"
+                  onClick={(e) => { e.stopPropagation(); heroGo(1); }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-white/85 hover:bg-white shadow-lg rounded-full w-10 h-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
                 >
                   <ChevronRight className="w-5 h-5 text-gray-800" />
                 </button>
               </>
             )}
 
-            {/* Dot indicators */}
+            {/* Progress bars at bottom */}
             {tour.images.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              <div className="absolute bottom-0 left-0 right-0 z-20 flex gap-0.5">
                 {tour.images.map((_, i) => (
-                  <button
+                  <div
                     key={i}
                     onClick={(e) => { e.stopPropagation(); setActiveImg(i); }}
-                    className={`rounded-full transition-all ${i === activeImg ? "w-5 h-2 bg-white" : "w-2 h-2 bg-white/60"}`}
-                  />
+                    className="flex-1 h-[3px] bg-white/30 cursor-pointer overflow-hidden"
+                  >
+                    <div className={`h-full bg-white transition-all duration-500 ${i === activeImg ? "w-full" : "w-0"}`} />
+                  </div>
                 ))}
               </div>
             )}
 
-            {/* View all photos */}
+            {/* View all photos badge */}
             {tour.images.length > 1 && (
-              <div className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-gray-800 text-xs font-semibold px-3 py-1.5 rounded-lg shadow cursor-pointer">
+              <div className="absolute bottom-5 right-4 z-20 bg-black/50 backdrop-blur-sm hover:bg-black/70 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
                 View {tour.images.length} Photos
               </div>
             )}
@@ -146,12 +189,12 @@ export default function TourDetail() {
 
           {/* Thumbnail strip */}
           {tour.images.length > 1 && (
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2 mt-2 overflow-x-auto pb-1 scrollbar-hide">
               {tour.images.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveImg(i)}
-                  className={`shrink-0 w-16 md:w-20 h-12 md:h-14 rounded-lg overflow-hidden border-2 transition-all ${activeImg === i ? "border-primary" : "border-transparent hover:border-gray-300"}`}
+                  className={`shrink-0 w-16 md:w-20 h-12 md:h-14 rounded-lg overflow-hidden border-2 transition-all duration-200 ${activeImg === i ? "border-primary shadow-md scale-105" : "border-transparent opacity-70 hover:opacity-100 hover:border-gray-300"}`}
                 >
                   <img src={img} alt="" className="w-full h-full object-cover" />
                 </button>
