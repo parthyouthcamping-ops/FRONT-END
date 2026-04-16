@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+/* @import "tw-animate-css"; */
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --font-sans: 'Outfit', sans-serif;
+  --font-serif: 'Outfit', sans-serif;
+  --font-mono: 'Outfit', sans-serif;
+
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-2xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  /* KLOOK SIGNATURE THEME */
+  --background: 0 0% 100%;       /* Pure White */
+  --foreground: 0 0% 0%;         /* Pure Black */
+  --border: 0 0% 92%;
+  --input: 0 0% 100%;
+  --ring: 21 100% 50%;             /* Klook Orange */
+
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+  --card-border: 0 0% 95%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
+  --popover-border: 0 0% 90%;
+
+  --primary: 21 100% 50%;          /* #FF5B00 Klook Orange */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 0 0% 10%;         /* Deep Black */
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 0 0% 98%;
+  --muted-foreground: 0 0% 45%; 
+
+  --accent: 21 100% 50%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --radius: 1.5rem; /* 24px Rounding */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Outfit', sans-serif !important;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .avian-card {
+    @apply bg-white border border-gray-100 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.2)] transition-all duration-500 rounded-3xl overflow-hidden;
+  }
+
+  .avian-button {
+    @apply bg-primary hover:bg-[#E65200] text-white font-bold px-8 py-4 transition-all duration-300 transform active:scale-95 rounded-2xl flex items-center justify-center gap-2;
+  }
+
+  .horizontal-scroll {
+    @apply flex overflow-x-auto gap-6 pb-8 snap-x;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .horizontal-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .image-zoom {
+    @apply overflow-hidden rounded-2xl;
+  }
+  .image-zoom img {
+    transition: transform 1.2s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .image-zoom:hover img {
+    @apply scale-110;
+  }
+
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+/* Custom Scrollbar (Used sparingly) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-200 rounded-full hover:bg-primary/50 transition-colors;
+}
