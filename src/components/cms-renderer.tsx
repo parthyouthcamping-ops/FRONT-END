@@ -77,7 +77,7 @@ const BannerSection = ({ data }: { data: any }) => (
 );
 
 const BlogsSection = ({ data }: { data: any }) => {
-  const apiUrl = (import.meta as any).env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = (import.meta as any).env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const [blogs, setBlogs] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -231,7 +231,7 @@ const StatsSection = ({ data }: { data: any }) => (
 );
 
 const TripsSection = ({ data }: { data: any }) => {
-  const apiUrl = (import.meta as any).env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = (import.meta as any).env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const [trips, setTrips] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -268,7 +268,7 @@ const TripsSection = ({ data }: { data: any }) => {
 
 
 const GridSection = ({ data }: { data: any }) => {
-  const apiUrl = (import.meta as any).env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = (import.meta as any).env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const [trips, setTrips] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -332,7 +332,7 @@ const VideoHeroSection = ({ data }: { data: any }) => {
 
 
 const ReviewsSection = ({ data }: { data: any }) => {
-  const apiUrl = (import.meta as any).env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = (import.meta as any).env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const [reviews, setReviews] = React.useState<any[]>([]);
 
   React.useEffect(() => {

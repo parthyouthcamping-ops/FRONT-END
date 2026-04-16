@@ -33,7 +33,7 @@ interface PageData {
 }
 
 export default function Home() {
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
 
   const { data: trips = [], isLoading } = useQuery<LiveTrip[]>({
     queryKey: ["trips"],

@@ -18,7 +18,7 @@ export interface SiteSettings {
 }
 
 export function useSettings() {
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
 
   return useQuery<SiteSettings>({
     queryKey: ["settings"],
