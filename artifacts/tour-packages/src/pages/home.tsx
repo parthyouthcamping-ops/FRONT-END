@@ -236,7 +236,10 @@ function Hero() {
 
   return (
     <section className="px-6 pt-10 pb-20 bg-gray-50">
-       <div className="max-w-7xl mx-auto h-[500px] lg:h-[650px] relative rounded-[40px] lg:rounded-[60px] overflow-hidden shadow-2xl group">
+       <div 
+         className="max-w-7xl mx-auto relative rounded-[40px] lg:rounded-[60px] overflow-hidden shadow-2xl group transition-all duration-500"
+         style={{ height: 'var(--hero-height, 650px)' }}
+       >
           <AnimatePresence mode="wait">
              <motion.div 
                key={index}
@@ -321,7 +324,7 @@ function InternationalDestinations() {
 
   return (
     <section className="py-24 bg-gray-50 overflow-hidden">
-       <div className="max-w-7xl mx-auto px-6 mb-12">
+       <div className="mx-auto px-6 mb-12" style={{ maxWidth: 'var(--container-max-width, 1280px)' }}>
           <h2 className="text-3xl font-black uppercase tracking-tight text-black">International Destinations</h2>
           <div className="w-20 h-1.5 bg-primary mt-4 rounded-full" />
        </div>

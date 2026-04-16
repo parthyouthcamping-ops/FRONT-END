@@ -13,6 +13,14 @@ export function ThemeManager() {
       if (accentColor) root.style.setProperty("--accent", accentColor);
       if (borderRadius) root.style.setProperty("--radius", `${borderRadius}px`);
       if (primaryFont) root.style.setProperty("--font-family", primaryFont);
+
+      // Dimensions
+      if (settings.dimensions) {
+        if (settings.dimensions.heroHeight) 
+          root.style.setProperty("--hero-height", `${settings.dimensions.heroHeight}px`);
+        if (settings.dimensions.containerWidth) 
+          root.style.setProperty("--container-max-width", `${settings.dimensions.containerWidth}px`);
+      }
     }
   }, [settings]);
 
