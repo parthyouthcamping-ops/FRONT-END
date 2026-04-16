@@ -72,7 +72,7 @@ interface LiveTrip {
 
 export default function TourDetail() {
   const { id } = useParams<{ id: string }>();
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const { data: settings } = useSettings();
 
   const { data: trip, isLoading, error } = useQuery<LiveTrip>({

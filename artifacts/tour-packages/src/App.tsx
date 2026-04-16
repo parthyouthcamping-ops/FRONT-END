@@ -10,6 +10,7 @@ import TourDetail from "@/pages/tour-detail";
 import MyTrips from "@/pages/my-trips";
 import BlogDetail from "@/pages/blog-detail";
 import { AuthProvider } from "@/lib/auth-context";
+import { ThemeManager } from "@/components/theme-manager";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <ThemeManager />
         <TooltipProvider>
           <WouterRouter base={import.meta.env.BASE_URL?.replace(/\/$/, "") || ""}>
             <Router />

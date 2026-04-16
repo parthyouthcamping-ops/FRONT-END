@@ -33,7 +33,7 @@ interface PageData {
 }
 
 export default function Home() {
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
 
   const { data: trips = [], isLoading } = useQuery<LiveTrip[]>({
     queryKey: ["trips"],
@@ -88,7 +88,10 @@ export default function Home() {
       ) : pageData?.sections ? (
         <CmsRenderer sections={pageData.sections} />
       ) : (
-        <Hero />
+        <>
+          <Hero />
+          <InternationalDestinations />
+        </>
       )}
 
       {/* ── CONTACT & SOCIAL BAR (WHATSAPP) ── */}
@@ -216,59 +219,127 @@ export default function Home() {
 
 
 function Hero() {
-  const images = [
-    "https://images.unsplash.com/photo-1647427017067-8f33ccbae493?auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1544621245-09893d567909?auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80"
+  const slides = [
+    { type: 'image', url: "https://images.unsplash.com/photo-1647427017067-8f33ccbae493?auto=format&fit=crop&q=80", title: "ADVENTURE AWAITS", sub: "Explore the wilderness with high-end luxury." },
+    { type: 'video', url: "https://www.w3schools.com/html/mov_bbb.mp4", title: "UNFORGETTABLE JOURNEYS", sub: "Create memories that last a lifetime." },
+    { type: 'image', url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80", title: "DISCOVER NATURE", sub: "Immerse yourself in the great outdoors." }
   ];
   
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
+      setIndex((prev) => (prev + 1) % slides.length);
+    }, 8000);
     return () => clearInterval(timer);
-  }, [images.length]);
+  }, [slides.length]);
 
   return (
-    <section className="relative h-[80vh] w-full flex items-center overflow-hidden bg-black">
-       <AnimatePresence mode="wait">
-         <motion.img 
-           key={index}
-           src={images[index]} 
-           initial={{ opacity: 0, scale: 1.1 }}
-           animate={{ opacity: 0.6, scale: 1 }}
-           exit={{ opacity: 0, scale: 0.95 }}
-           transition={{ duration: 2, ease: "easeInOut" }}
-           className="absolute inset-0 w-full h-full object-cover"
-           alt="Hero Slider"
-         />
-       </AnimatePresence>
-       
-       <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
-       
-       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-20">
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.5, ease: [0.2, 0, 0, 1] }}
-            className="max-w-4xl lg:ml-24"
-          >
-            <h1 className="text-[7vw] lg:text-[4.5vw] font-black text-white leading-[1] tracking-tighter uppercase">
-              One trip at a time
-            </h1>
-          </motion.div>
-       </div>
+    <section className="px-6 pt-10 pb-20 bg-gray-50">
+       <div className="max-w-7xl mx-auto h-[500px] lg:h-[650px] relative rounded-[40px] lg:rounded-[60px] overflow-hidden shadow-2xl group">
+          <AnimatePresence mode="wait">
+             <motion.div 
+               key={index}
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               exit={{ opacity: 0 }}
+               transition={{ duration: 1.5 }}
+               className="absolute inset-0"
+             >
+                {slides[index].type === 'video' ? (
+                  <video 
+                    src={slides[index].url} 
+                    autoPlay 
+                    muted 
+                    loop 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img 
+                    src={slides[index].url} 
+                    className="w-full h-full object-cover" 
+                    alt="Hero"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+             </motion.div>
+          </AnimatePresence>
 
-       {/* Slider Indicators */}
-       <div className="absolute bottom-10 right-10 flex gap-3 z-20">
-         {images.map((_, i) => (
-           <div 
-             key={i} 
-             className={`h-1 transition-all duration-500 rounded-full ${i === index ? "w-12 bg-white" : "w-4 bg-white/20"}`}
-           />
-         ))}
+          <div className="absolute inset-0 flex flex-col justify-end p-10 lg:p-20 text-white">
+             <motion.div
+               key={`text-${index}`}
+               initial={{ y: 50, opacity: 0 }}
+               animate={{ y: 0, opacity: 1 }}
+               transition={{ duration: 0.8, delay: 0.5 }}
+               className="max-w-3xl space-y-6"
+             >
+                <div className="flex items-center gap-3">
+                   <div className="w-12 h-0.5 bg-primary" />
+                   <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">Est. 2026</span>
+                </div>
+                <h1 className="text-5xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9]">
+                  {slides[index].title}
+                </h1>
+                <p className="text-lg lg:text-xl font-medium text-gray-300 max-w-xl">
+                  {slides[index].sub}
+                </p>
+                <div className="flex gap-4 pt-6">
+                   <button className="avian-button shadow-2xl shadow-primary/40">
+                      EXPLORE TRIPS
+                   </button>
+                   <button className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-black uppercase text-[10px] tracking-widest px-10 rounded-2xl h-14 transition-all">
+                      VIEW BLOG
+                   </button>
+                </div>
+             </motion.div>
+          </div>
+
+          {/* Slider Controls */}
+          <div className="absolute bottom-10 right-10 flex gap-2">
+             {slides.map((_, i) => (
+               <button 
+                 key={i} 
+                 onClick={() => setIndex(i)}
+                 className={`h-1.5 transition-all duration-500 rounded-full ${i === index ? "w-16 bg-white" : "w-6 bg-white/30"}`}
+               />
+             ))}
+          </div>
+       </div>
+    </section>
+  );
+}
+
+function InternationalDestinations() {
+  const destinations = [
+    { name: "Maldives", image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&q=80" },
+    { name: "Singapore", image: "https://images.unsplash.com/photo-1525625239513-94e94fabf2c4?auto=format&fit=crop&q=80" },
+    { name: "Thailand", image: "https://images.unsplash.com/photo-1528181304800-2f140819ad9c?auto=format&fit=crop&q=80" },
+    { name: "Malaysia", image: "https://images.unsplash.com/photo-1555217851-6141535bd771?auto=format&fit=crop&q=80" },
+    { name: "Bali", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80" },
+    { name: "Vietnam", image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80" }
+  ];
+
+  return (
+    <section className="py-24 bg-gray-50 overflow-hidden">
+       <div className="max-w-7xl mx-auto px-6 mb-12">
+          <h2 className="text-3xl font-black uppercase tracking-tight text-black">International Destinations</h2>
+          <div className="w-20 h-1.5 bg-primary mt-4 rounded-full" />
+       </div>
+       
+       <div className="flex gap-6 overflow-x-auto pb-10 px-6 lg:px-20 no-scrollbar scroll-smooth">
+          {destinations.map((dest, i) => (
+            <motion.div 
+               key={i}
+               whileHover={{ y: -10 }}
+               className="min-w-[280px] h-[400px] relative rounded-[32px] overflow-hidden shadow-lg group cursor-pointer"
+            >
+               <img src={dest.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+               <div className="absolute bottom-8 left-8">
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter">{dest.name}</h3>
+               </div>
+            </motion.div>
+          ))}
        </div>
     </section>
   );

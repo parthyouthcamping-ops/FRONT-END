@@ -21,7 +21,7 @@ export default function TourListings() {
   const [maxPrice, setMaxPrice] = useState<number | "">("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
 
   const { data: trips = [], isLoading } = useQuery<LiveTrip[]>({
     queryKey: ["trips"],

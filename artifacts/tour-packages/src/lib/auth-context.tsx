@@ -23,7 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(localStorage.getItem('traveler_token'));
   const [isLoading, setIsLoading] = useState(true);
 
-  const apiUrl = import.meta.env.VITE_API_URL || import.meta.env.NEXT_PUBLIC_API_URL || "http://localhost:8888/api";
+  const apiUrl = import.meta.env.VITE_API_URL || import.meta.env.NEXT_PUBLIC_API_URL || "https://back-end-production-191d.up.railway.app/api";
 
   const login = (data: { token: string; user: User }) => {
     localStorage.setItem('traveler_token', data.token);
