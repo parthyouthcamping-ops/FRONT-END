@@ -1,0 +1,9 @@
+{
+  "outputDirectory": "artifacts/tour-packages/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
