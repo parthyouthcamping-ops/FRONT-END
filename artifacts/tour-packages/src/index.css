@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Dancing+Script:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
-/* @import "tw-animate-css"; */
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -28,6 +27,9 @@
   --color-secondary-foreground: hsl(var(--secondary-foreground));
   --color-secondary-border: var(--secondary-border);
 
+  --color-cyan: #00CBD0;
+  --color-klook-orange: #FF5B00;
+
   --color-muted: hsl(var(--muted));
   --color-muted-foreground: hsl(var(--muted-foreground));
   --color-muted-border: var(--muted-border);
@@ -40,49 +42,53 @@
   --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-destructive-border: var(--destructive-border);
 
-  --font-sans: 'Outfit', sans-serif;
-  --font-serif: 'Outfit', sans-serif;
-  --font-mono: 'Outfit', sans-serif;
+  --font-sans: var(--font-main, 'Montserrat'), sans-serif;
+  --font-serif: var(--font-main, 'Montserrat'), sans-serif;
+  --font-mono: var(--font-main, 'Montserrat'), sans-serif;
+  --font-handwriting: var(--font-accent-hand, 'Dancing Script'), cursive;
 
-  --radius-sm: calc(var(--radius) - 8px);
-  --radius-md: calc(var(--radius) - 4px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 8px);
-  --radius-2xl: calc(var(--radius) + 16px);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
 }
 
 :root {
+  /* Dynamic Variables from Admin Panel */
+  --font-main: 'Montserrat';
+  --font-accent-hand: 'Dancing Script';
+
   /* KLOOK SIGNATURE THEME */
   --background: 0 0% 100%;       /* Pure White */
-  --foreground: 0 0% 0%;         /* Pure Black */
-  --border: 0 0% 92%;
+  --foreground: 0 0% 13%;        /* #212121 - Klook Primary Text */
+  --border: 0 0% 93%;            /* #EDEDED - Soft Border */
   --input: 0 0% 100%;
-  --ring: 21 100% 50%;             /* Klook Orange */
+  --ring: 21 100% 50%;           /* Klook Orange */
 
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 0%;
-  --card-border: 0 0% 95%;
+  --card-foreground: 0 0% 13%;
+  --card-border: 0 0% 96%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 0%;
+  --popover-foreground: 0 0% 13%;
   --popover-border: 0 0% 90%;
 
   --primary: 21 100% 50%;          /* #FF5B00 Klook Orange */
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 0 0% 10%;         /* Deep Black */
+  --secondary: 181 100% 41%;       /* #00CBD0 Klook Cyan */
   --secondary-foreground: 0 0% 100%;
 
-  --muted: 0 0% 98%;
-  --muted-foreground: 0 0% 45%; 
-
+  --muted: 0 0% 96%;               /* #F5F5F5 - Klook Ghost Background */
+  --muted-foreground: 0 0% 46%;    /* #757575 - Secondary Text */
   --accent: 21 100% 50%;
   --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
-  --radius: 1.5rem; /* 24px Rounding */
+  --radius: 1rem; /* 16px Base Rounding */
 }
 
 @layer base {
@@ -91,25 +97,44 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Outfit', sans-serif !important;
+    font-family: var(--font-sans) !important;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    @apply font-bold tracking-tight text-[#212121];
+    font-family: var(--font-sans) !important;
   }
 }
 
 @layer utilities {
+  .font-handwriting {
+    font-family: 'Dancing Script', cursive !important;
+  }
   .avian-card {
-    @apply bg-white border border-gray-100 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.2)] transition-all duration-500 rounded-3xl overflow-hidden;
+    @apply bg-white border border-gray-100 shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] transition-all duration-300 rounded-[24px] overflow-hidden;
   }
 
   .avian-button {
-    @apply bg-primary hover:bg-[#E65200] text-white font-bold px-8 py-4 transition-all duration-300 transform active:scale-95 rounded-2xl flex items-center justify-center gap-2;
+    @apply bg-primary hover:bg-[#E65200] text-white font-bold px-8 py-3.5 transition-all duration-300 transform active:scale-[0.98] rounded-full flex items-center justify-center gap-2;
+  }
+
+  .avian-button-outline {
+    @apply bg-white border-2 border-primary text-primary hover:bg-orange-50 font-bold px-8 py-3.5 transition-all duration-300 rounded-full flex items-center justify-center gap-2;
+  }
+
+  .nav-blur {
+    @apply bg-white/95 backdrop-blur-md border-b border-gray-100;
+  }
+  
+  .badge-cyan {
+    @apply bg-[#00CBD0]/10 text-[#00CBD0] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider;
+  }
+  
+  .badge-orange {
+    @apply bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider;
   }
 
   .horizontal-scroll {
-    @apply flex overflow-x-auto gap-6 pb-8 snap-x;
-    -ms-overflow-style: none;
+    @apply flex overflow-x-auto gap-4 pb-4 snap-x;
     scrollbar-width: none;
   }
   
@@ -118,37 +143,36 @@
   }
   
   .image-zoom {
-    @apply overflow-hidden rounded-2xl;
+    @apply overflow-hidden;
   }
   .image-zoom img {
-    transition: transform 1.2s cubic-bezier(0.2, 0, 0, 1);
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
   .image-zoom:hover img {
-    @apply scale-110;
+    @apply scale-105;
   }
 
-  .glass-panel {
-    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  .section-ghost {
+    @apply bg-[#F5F5F5];
   }
 }
 
 /* Animations */
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
+  animation: fade-in-up 0.5s ease-out forwards;
 }
 
-/* Custom Scrollbar (Used sparingly) */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-200 rounded-full hover:bg-primary/50 transition-colors;
+  @apply bg-gray-300 rounded-full hover:bg-primary transition-colors;
 }

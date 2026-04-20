@@ -13,43 +13,44 @@ interface TourCardProps {
 }
 
 export function TourCard({ id, title, subtitle, duration, price, originalPrice, images }: TourCardProps) {
-  const savings = originalPrice - price;
-
   return (
     <Link href={`/tours/${id}`}>
-      <div className="bg-white rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-50 flex flex-col group h-full">
-        {/* Image Container */}
-        <div className="relative h-64 overflow-hidden">
+      <div className="avian-card flex flex-col group h-full cursor-pointer">
+        <div className="relative h-64 overflow-hidden image-zoom">
           <img
             src={images[0] || "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b"}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            className="w-full h-full object-cover"
           />
+          <div className="absolute top-4 left-4">
+             <span className="badge-cyan">{duration}</span>
+          </div>
         </div>
 
-        {/* Content */}
-        <div className="p-8 flex-1 flex flex-col space-y-4">
-          <div className="space-y-1">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">{duration}</p>
-            <h3 className="text-lg font-black leading-tight text-black line-clamp-2 uppercase tracking-tight group-hover:text-primary transition-colors">
-              {title}
-            </h3>
-            <p className="text-[10px] text-gray-500 font-medium italic">{subtitle}</p>
+        <div className="p-5 flex-1 flex flex-col">
+          <div className="flex items-center gap-1 mb-2">
+            <Star className="w-3.5 h-3.5 text-primary fill-primary" />
+            <span className="text-[11px] font-bold text-black tracking-tight">4.9/5</span>
+            <span className="text-[11px] text-gray-400 font-medium">(2.4k+ reviews)</span>
           </div>
           
-          <div className="mt-auto pt-4 flex flex-col gap-4">
-            {savings > 0 && (
-              <div className="self-start bg-green-50 text-green-600 px-4 py-1.5 rounded-full flex items-center gap-2 border border-green-100">
-                 <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                 <span className="text-[10px] font-black uppercase tracking-widest">Save ₹{savings.toLocaleString()}</span>
-              </div>
-            )}
-            
-            <div className="flex items-baseline gap-3">
-               <span className="text-xl font-black text-primary italic">₹{price.toLocaleString()}</span>
-               {originalPrice > price && (
-                 <span className="text-xs font-bold text-gray-300 line-through decoration-2 tracking-tighter decoration-gray-200">₹{originalPrice.toLocaleString()}</span>
-               )}
+          <h3 className="text-base font-bold leading-snug text-[#212121] line-clamp-2 group-hover:text-primary transition-colors mb-2">
+            {title}
+          </h3>
+          <p className="text-xs text-gray-500 font-medium mb-4">{subtitle}</p>
+          
+          <div className="mt-auto pt-4 border-t border-gray-50 flex items-end justify-between">
+            <div className="flex flex-col">
+               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Starting from</span>
+               <div className="flex items-baseline gap-2">
+                  <span className="text-xl font-bold text-primary tracking-tight">₹{price.toLocaleString()}</span>
+                  {originalPrice > price && (
+                    <span className="text-xs font-medium text-gray-400 line-through">₹{originalPrice.toLocaleString()}</span>
+                  )}
+               </div>
+            </div>
+            <div className="avian-button-outline !px-4 !py-2 !text-[10px] scale-90 group-hover:scale-100 transition-transform">
+               View Details
             </div>
           </div>
         </div>
@@ -57,6 +58,3 @@ export function TourCard({ id, title, subtitle, duration, price, originalPrice, 
     </Link>
   );
 }
-
-
-

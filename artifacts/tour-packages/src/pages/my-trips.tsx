@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { useAuth } from "@/lib/auth-context";
 import { useLocation } from "wouter";
-import { Loader2, Calendar, MapPin, Users, ChevronRight, BookOpen, Clock, CheckCircle2, XCircle } from "lucide-react";
+import { Loader2, Calendar, MapPin, Users, ChevronRight, BookOpen, Clock, CheckCircle2, XCircle, Train, Download } from "lucide-react";
 import { toast } from "sonner";
+import { API_URL } from "@/lib/api-config";
 
 interface Booking {
   _id: string;
@@ -19,6 +20,18 @@ interface Booking {
     images: string[];
     itinerary: { day: number; title: string; description: string }[];
   };
+  trainTickets?: {
+    pnr: string;
+    trainNo: string;
+    trainName: string;
+    from: string;
+    to: string;
+    departureDate?: string;
+    arrivalDate?: string;
+    coach: string;
+    seat: string;
+    status: string;
+  }[];
 }
 
 export default function MyTrips() {
@@ -27,7 +40,7 @@ export default function MyTrips() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8888/api";
+  const apiUrl = API_URL;
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -227,6 +240,87 @@ function TripCard({ booking, getStatusColor, getStatusIcon }: { booking: Booking
           </div>
         </div>
       </div>
+      
+      {/* Train Tickets Section */}
+      {booking.trainTickets && booking.trainTickets.length > 0 && (
+        <div className="bg-primary/5 p-6 border-t border-primary/10">
+          <h4 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Train className="w-5 h-5 text-primary" />
+            Train Ticket Information
+          </h4>
+          <div className="grid gap-4 md:grid-cols-2">
+            {booking.trainTickets.map((ticket, idx) => (
+              <div key={idx} className="bg-white rounded-2xl p-4 border border-primary/10 shadow-sm relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-12 -mt-12 transition-all group-hover:scale-110" />
+                
+                <div className="flex justify-between items-start mb-4 relative z-10">
+                  <div>
+                    <span className="text-[10px] font-black text-primary/50 uppercase tracking-widest">PNR NUMBER</span>
+                    <p className="text-sm font-black text-gray-900 tracking-wider">{ticket.pnr || "PENDING"}</p>
+                  </div>
+                  <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter border ${
+                    ticket.status === 'Confirmed' ? 'bg-green-50 text-green-600 border-green-100' : 
+                    ticket.status === 'Cancelled' ? 'bg-red-50 text-red-600 border-red-100' : 
+                    'bg-amber-50 text-amber-600 border-amber-100'
+                  }`}>
+                    {ticket.status}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 mb-4 relative z-10">
+                  <div className="flex-1">
+                    <p className="text-[10px] text-gray-400 font-bold uppercase">From</p>
+                    <p className="text-sm font-black text-gray-800">{ticket.from}</p>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <div className="w-8 h-[1px] bg-gray-200 relative">
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary/30" />
+                    </div>
+                  </div>
+                  <div className="flex-1 text-right">
+                    <p className="text-[10px] text-gray-400 font-bold uppercase">To</p>
+                    <p className="text-sm font-black text-gray-800">{ticket.to}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-50 relative z-10">
+                  <div>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase">Train</p>
+                    <p className="text-xs font-bold text-gray-700">{ticket.trainNo} {ticket.trainName}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] text-gray-400 font-bold uppercase">Coach / Seat</p>
+                    <p className="text-xs font-bold text-gray-700">{ticket.coach} / {ticket.seat}</p>
+                  </div>
+                </div>
+
+                {ticket.departureDate && (
+                  <div className="mt-3 flex items-center gap-1 text-[10px] text-primary font-bold uppercase tracking-wider">
+                    <Clock className="w-3 h-3" />
+                    Departs: {new Date(ticket.departureDate).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}
+                  </div>
+                )}
+
+                {ticket.ticketUrl && (
+                  <div className="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-[9px] text-gray-400 font-bold uppercase">
+                      <div className="w-1 h-1 rounded-full bg-green-500" />
+                      E-Ticket Ready
+                    </div>
+                    <button 
+                      onClick={() => window.open(`${apiUrl.replace('/api', '')}${ticket.ticketUrl}`, "_blank")}
+                      className="bg-primary/10 text-primary text-[10px] font-black px-3 py-1.5 rounded-lg flex items-center gap-1.5 hover:bg-primary hover:text-white transition-all"
+                    >
+                      <Download className="w-3 h-3" />
+                      DOWNLOAD TICKET
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Itinerary Dropdown */}
       {showItinerary && (

@@ -1,26 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 
 export interface SiteSettings {
-  siteName: string;
-  contactEmail: string;
-  contactPhone: string;
-  address: string;
-  currency: string;
-  socialLinks: {
-    facebook: string;
-    instagram: string;
-    twitter: string;
-    youtube: string;
-    linkedin: string;
+  organization: {
+    name: string;
+    website: string;
+    supportEmail: string;
+    supportPhone: string;
+    address: string;
   };
-  logo: string;
-  favicon: string;
-  theme: {
+  brand: {
     primaryColor: string;
     accentColor: string;
-    borderRadius: number;
     primaryFont: string;
+    handwrittenFont: string;
+    logo: string;
+    favicon: string;
   };
+  socialLinks: {
+    facebook?: string;
+    instagram?: string;
+    youtube?: string;
+    whatsapp?: string;
+    twitter?: string;
+  };
+  smtp: {
+    host: string;
+    port: string;
+    user: string;
+    fromName: string;
+    fromEmail: string;
+  };
+  tripCustomFields: Array<{ label: string; type: string }>;
 }
 
 export function useSettings() {

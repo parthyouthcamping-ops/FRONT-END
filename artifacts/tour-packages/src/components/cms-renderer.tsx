@@ -2,11 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { TourCard } from './tour-card';
 import { BookOpen, Play, ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
+import { API_URL } from '@/lib/api-config';
 
 interface Section {
   id: string;
   type: string;
   data: any;
+  isVisible?: boolean;
 }
 
 export const CmsRenderer: React.FC<{ sections: Section[] }> = ({ sections }) => {
@@ -59,8 +61,7 @@ const BannerSection = ({ data }: { data: any }) => (
       <div className="absolute inset-0 bg-black/20" />
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center p-6 space-y-6">
          <span className="text-white text-xl lg:text-3xl font-medium italic drop-shadow-md">It's time for</span>
-         <h2 className="text-white text-6xl lg:text-9xl font-black drop-shadow-2xl" 
-             style={{ fontFamily: "'Dancing Script', cursive" }}>
+         <h2 className="text-white text-6xl lg:text-9xl font-black drop-shadow-2xl font-handwriting">
             {data.title.includes('Winter') ? 'Winter Trips' : data.title}
          </h2>
          <div className="bg-white/90 backdrop-blur-md px-10 py-3 rounded-full flex gap-3 text-xs lg:text-base font-bold shadow-xl">
@@ -77,14 +78,13 @@ const BannerSection = ({ data }: { data: any }) => (
 );
 
 const BlogsSection = ({ data }: { data: any }) => {
-  const apiUrl = (import.meta as any).env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const [blogs, setBlogs] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    fetch(`${apiUrl}/blogs`)
+    fetch(`${API_URL}/blogs`)
       .then(res => res.json())
       .then(json => setBlogs(json.data || []));
-  }, [apiUrl]);
+  }, []);
 
   return (
     <section className="py-24 bg-[#f8f8f8]">
@@ -170,7 +170,7 @@ const VideoSection = ({ data }: { data: any }) => {
 
 
 const HeroSection = ({ data }: { data: any }) => (
-  <section className="relative h-[80vh] w-full flex items-center overflow-hidden bg-black">
+  <section className="relative h-[500px] w-full flex items-center overflow-hidden bg-black">
     <img 
       src={data.image} 
       className="absolute inset-0 w-full h-full object-cover opacity-60"
@@ -184,10 +184,11 @@ const HeroSection = ({ data }: { data: any }) => (
         transition={{ duration: 1.5 }}
         className="max-w-4xl lg:ml-24"
       >
+        <span className="font-handwriting text-primary text-3xl mb-4 block drop-shadow-lg">{data.subtitle?.split('|')[0] || "Discover the magic"}</span>
         <h1 className="text-[7vw] lg:text-[4.5vw] font-black text-white leading-[1] tracking-tighter uppercase">
           {data.title}
         </h1>
-        {data.subtitle && <p className="text-xl text-gray-300 mt-6 max-w-xl font-medium">{data.subtitle}</p>}
+        {data.subtitle && <p className="text-xl text-gray-300 mt-6 max-w-xl font-medium">{data.subtitle.split('|')[1] || data.subtitle}</p>}
       </motion.div>
     </div>
   </section>
@@ -231,20 +232,19 @@ const StatsSection = ({ data }: { data: any }) => (
 );
 
 const TripsSection = ({ data }: { data: any }) => {
-  const apiUrl = (import.meta as any).env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const [trips, setTrips] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    fetch(`${apiUrl}/trips`)
+    fetch(`${API_URL}/trips`)
       .then(res => res.json())
       .then(json => {
         const mapped = (json.data || []).map((t: any) => ({ ...t, id: t._id }));
         setTrips(mapped);
       });
-  }, [apiUrl]);
+  }, []);
 
   return (
-    <section className="py-24 bg-white overflow-hidden">
+    <section className="py-24 section-ghost overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-20 mb-12 flex items-center justify-between">
          <h2 className="text-3xl font-black text-black tracking-tighter uppercase">{data.title || 'Trending'}</h2>
          <div className="flex gap-2">
@@ -259,7 +259,7 @@ const TripsSection = ({ data }: { data: any }) => {
               <TourCard {...trip} originalPrice={trip.price + 5000} subtitle={trip.location} />
            </motion.div>
          )) : (
-           <div className="w-full text-center py-20 opacity-20 font-black uppercase tracking-widest">No trips found in database...</div>
+           <div className="w-full text-center py-20 opacity-20 font-black uppercase tracking-widest text-sm">No trips found in database...</div>
          )}
       </div>
     </section>
@@ -268,17 +268,16 @@ const TripsSection = ({ data }: { data: any }) => {
 
 
 const GridSection = ({ data }: { data: any }) => {
-  const apiUrl = (import.meta as any).env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const [trips, setTrips] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    fetch(`${apiUrl}/trips`)
+    fetch(`${API_URL}/trips`)
       .then(res => res.json())
       .then(json => {
         const mapped = (json.data || []).map((t: any) => ({ ...t, id: t._id }));
         setTrips(mapped);
       });
-  }, [apiUrl]);
+  }, []);
 
   return (
     <section className="py-24 bg-white">
@@ -291,13 +290,13 @@ const GridSection = ({ data }: { data: any }) => {
          </div>
          
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-           {trips.slice(0, data.count || 6).map((tour) => (
-             <TourCard key={tour.id} {...tour} originalPrice={tour.price + 5000} subtitle={tour.location} />
-           ))}
+            {trips.slice(0, data.count || 6).map((tour) => (
+              <TourCard key={tour.id} {...tour} originalPrice={tour.price + 5000} subtitle={tour.location} />
+            ))}
          </div>
          
          {trips.length === 0 && (
-           <div className="w-full text-center py-20 opacity-20 font-black uppercase tracking-widest">No trips found in database...</div>
+           <div className="w-full text-center py-20 opacity-20 font-black uppercase tracking-widest text-sm">No trips found in database...</div>
          )}
       </div>
     </section>
@@ -314,32 +313,33 @@ const VideoHeroSection = ({ data }: { data: any }) => {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black">
-      <div className="absolute inset-0 z-0 scale-110 pointer-events-none">
-        <iframe 
-          src={getEmbedUrl(data.url)}
-          className="w-full h-full border-0"
-          allow="autoplay; encrypted-media"
-        />
+    <section className="py-24 section-ghost">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="relative h-[500px] w-full rounded-[60px] overflow-hidden shadow-[0_30px_100px_-20px_rgba(0,0,0,0.2)] bg-black">
+          <div className="absolute inset-0 z-0 scale-110 pointer-events-none">
+            <iframe 
+              src={getEmbedUrl(data.url)}
+              className="w-full h-full border-0"
+              allow="autoplay; encrypted-media"
+            />
+          </div>
+          <div className="absolute inset-0 bg-black/20 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-20" />
+        </div>
       </div>
-      <div className="absolute inset-0 bg-black/40 z-10" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-20" />
-      
-      {/* Clean video-only hero — no overlay text */}
     </section>
   );
 };
 
 
 const ReviewsSection = ({ data }: { data: any }) => {
-  const apiUrl = (import.meta as any).env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const [reviews, setReviews] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    fetch(`${apiUrl}/reviews?featured=true`)
+    fetch(`${API_URL}/reviews?featured=true`)
       .then(res => res.json())
       .then(json => setReviews(json.data || []));
-  }, [apiUrl]);
+  }, []);
 
   return (
     <section className="py-24 bg-white">

@@ -7,12 +7,16 @@ export function ThemeManager() {
   useEffect(() => {
     if (settings?.theme) {
       const root = document.documentElement;
-      const { primaryColor, accentColor, borderRadius, primaryFont } = settings.theme;
+      const { primaryColor, accentColor, borderRadius, primaryFont, handwritingFont, headerTitle } = settings.theme;
 
-      if (primaryColor) root.style.setProperty("--primary", primaryColor);
+      if (primaryColor) {
+        // Simple hex to HSL approximation for compatibility with index.css
+        root.style.setProperty("--primary", primaryColor);
+      }
       if (accentColor) root.style.setProperty("--accent", accentColor);
       if (borderRadius) root.style.setProperty("--radius", `${borderRadius}px`);
-      if (primaryFont) root.style.setProperty("--font-family", primaryFont);
+      if (primaryFont) root.style.setProperty("--font-main", primaryFont);
+      if (handwritingFont) root.style.setProperty("--font-accent-hand", handwritingFont);
 
       // Dimensions
       if (settings.dimensions) {

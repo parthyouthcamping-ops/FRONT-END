@@ -11,6 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useSettings } from "@/hooks/use-settings";
 import { InquiryPopup } from "@/components/inquiry-popup";
 import { AnimatePresence, motion } from "framer-motion";
+import { Footer } from "@/components/footer";
+import { SEO } from "@/components/seo";
 
 const TABS = [
   { id: "overview", label: "About" },
@@ -19,28 +21,6 @@ const TABS = [
   { id: "itinerary", label: "Itinerary" },
   { id: "inclusions", label: "Inclusions" },
   { id: "faqs", label: "FAQs" },
-];
-
-const STARTING_LOCATIONS = [
-  {
-    id: "ahmedabad",
-    label: "Ahmedabad",
-    duration: "11 Days",
-    originalPrice: 24800,
-    discountedPrice: 20800,
-    image: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=800&auto=format&fit=crop"
-  }
-];
-
-const TRAVEL_OPTIONS = [
-  { id: "non-ac", label: "Non AC Sleeper Train" },
-  { id: "ac", label: "AC Sleeper Train" }
-];
-
-const ROOM_SHARING = [
-  { id: "triple", label: "Triple" },
-  { id: "double", label: "Double" },
-  { id: "single", label: "Single" }
 ];
 
 const DEPARTURE_MONTHS = ["May", "June", "July", "August", "September", "October"];
@@ -52,6 +32,37 @@ const DATES_BY_MONTH: Record<string, number[]> = {
   "September": [4, 11, 18, 25],
   "October": [2, 9, 16, 23, 30],
 };
+
+import { API_URL } from "@/lib/api-config";
+
+interface Variant {
+  id?: string;
+  location: string;
+  duration: string;
+  originalPrice: number;
+  discountedPrice: number;
+  image: string;
+  label?: string;
+}
+
+interface TravelOption {
+  id?: string;
+  label: string;
+  priceDelta: number;
+  description?: string;
+}
+
+interface RoomOption {
+  id?: string;
+  label: string;
+  priceDelta: number;
+}
+
+interface Addon {
+  name: string;
+  rate: number;
+  description?: string;
+}
 
 interface LiveTrip {
   id: string;
@@ -67,33 +78,39 @@ interface LiveTrip {
   heroImage?: string;
   itinerary: { day: number; title: string; description: string; location?: string; activities?: string[]; stay?: string; meals?: string; photos?: string[] }[];
   faqs?: { question: string; answer: string }[];
-  availableDates?: string[];
+  availableDates?: any[];
+  variants?: Variant[];
+  travelOptions?: TravelOption[];
+  roomOptions?: RoomOption[];
+  addons?: Addon[];
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: string;
+    focusKeyword?: string;
+    canonicalUrl?: string;
+    faqSchema?: Array<{ question: string; answer: string }>;
+  };
 }
 
 export default function TourDetail() {
   const { id } = useParams<{ id: string }>();
-  const apiUrl = import.meta.env.VITE_API_URL || "https://back-end-production-191d.up.railway.app/api";
   const { data: settings } = useSettings();
 
   const { data: trip, isLoading, error } = useQuery<LiveTrip>({
     queryKey: ["trip", id],
     queryFn: async () => {
-      console.log(`[TourDetail] Fetching trip... ID: ${id}, URL: ${apiUrl}/trips/${id}`);
-      const res = await fetch(`${apiUrl}/trips/${id}`);
+      const res = await fetch(`${API_URL}/trips/${id}`);
       if (!res.ok) {
-        const errorText = await res.text();
-        console.error(`[TourDetail] Fetch failed: ${res.status}`, errorText);
-        throw new Error(`API Error ${res.status}: ${errorText}`);
+        throw new Error(`API Error ${res.status}`);
       }
       const json = await res.json();
-      console.log(`[TourDetail] API Response:`, json);
-      if (!json.success || !json.data) {
-        throw new Error(json.message || "Experience data not found");
-      }
       return json.data;
     },
     enabled: !!id,
-    retry: 1
+    retry: 1,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    gcTime: 1000 * 60 * 30,    // 30 minutes
   });
 
   const [activeTab, setActiveTab] = useState("overview");
@@ -105,27 +122,35 @@ export default function TourDetail() {
   
   // selection state using final options
   const finalVariants = (trip?.variants && trip.variants.length > 0) 
-    ? trip.variants.filter(v => (v.location || (v as any).label)).map((v, i) => ({ ...v, id: `v-${i}` })) 
-    : STARTING_LOCATIONS;
+    ? trip.variants.map((v, i) => ({ ...v, id: `v-${i}`, label: v.location || (v as any).label || `Option ${i+1}` })) 
+    : [{ 
+        id: "v-default", 
+        location: trip?.location || "Main Origin", 
+        duration: trip?.duration || "Standard", 
+        originalPrice: Math.round((trip?.price || 0) * 1.25), 
+        discountedPrice: trip?.price || 0,
+        image: trip?.heroImage || trip?.images?.[0] || "https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=800&auto=format&fit=crop",
+        label: trip?.location || "Main Origin"
+      }];
     
   const finalTravelOptions = (trip?.travelOptions && trip.travelOptions.length > 0) 
-    ? trip.travelOptions.filter(o => o.label).map((o, i) => ({ ...o, id: `o-${i}` })) 
-    : TRAVEL_OPTIONS;
+    ? trip.travelOptions.map((o, i) => ({ ...o, id: `o-${i}` })) 
+    : [{ id: "o-default", label: "Standard Travel", priceDelta: 0, description: "Standard transportation as per itinerary" }];
     
   const finalRoomOptions = (trip?.roomOptions && trip.roomOptions.length > 0) 
-    ? trip.roomOptions.filter(o => o.label).map((o, i) => ({ ...o, id: `r-${i}` })) 
-    : ROOM_SHARING;
+    ? trip.roomOptions.map((o, i) => ({ ...o, id: `r-${i}` })) 
+    : [{ id: "r-default", label: "Standard Sharing", priceDelta: 0 }];
 
-  const [selectedLocation, setSelectedLocation] = useState(finalVariants[0]?.id || "v-0");
-  const [selectedTravel, setSelectedTravel] = useState(finalTravelOptions[0]?.id || "o-0");
-  const [selectedRoom, setSelectedRoom] = useState(finalRoomOptions[0]?.id || "r-0");
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [selectedTravel, setSelectedTravel] = useState<string>("");
+  const [selectedRoom, setSelectedRoom] = useState<string>("");
 
   // Sync selection when trip data loads
   useEffect(() => {
-    if (trip?.id) {
-      if (trip.variants?.length) setSelectedLocation("v-0");
-      if (trip.travelOptions?.length) setSelectedTravel("o-0");
-      if (trip.roomOptions?.length) setSelectedRoom("r-0");
+    if (trip) {
+      if (finalVariants.length) setSelectedLocation(finalVariants[0].id!);
+      if (finalTravelOptions.length) setSelectedTravel(finalTravelOptions[0].id!);
+      if (finalRoomOptions.length) setSelectedRoom(finalRoomOptions[0].id!);
     }
   }, [trip?.id]);
 
@@ -268,6 +293,14 @@ export default function TourDetail() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title={trip.seo?.metaTitle || trip.title} 
+        description={trip.seo?.metaDescription || trip.description?.substring(0, 160)} 
+        image={trip.seo?.ogImage || trip.heroImage || trip.images?.[0]} 
+        focusKeyword={trip.seo?.focusKeyword}
+        canonicalUrl={trip.seo?.canonicalUrl}
+        faqSchema={trip.seo?.faqSchema}
+      />
       <Navbar />
 
       {/* ── GALLERY GRID (AVIAN STYLE) ── */}
@@ -902,6 +935,8 @@ export default function TourDetail() {
 
         </div>
       </div>
+
+      <Footer />
 
       <AnimatePresence>
         {showInquiry && (

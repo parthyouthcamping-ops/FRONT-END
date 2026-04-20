@@ -77,7 +77,9 @@ export function Navbar() {
       <div className={`fixed inset-0 bg-white z-[60] transition-transform duration-700 cubic-bezier(0.2, 0, 0, 1) transform ${menuOpen ? "translate-x-0" : "translate-x-full"} lg:hidden`}>
         <div className="p-6 h-full flex flex-col">
           <div className="flex items-center justify-between mb-16">
-            <span className="text-2xl font-black text-black">{settings?.siteName || "YouthCamping"}</span>
+            <span className="text-2xl font-black text-black uppercase tracking-tighter">
+              {settings?.theme?.headerTitle || settings?.siteName || "YouthCamping"}
+            </span>
             <X className="w-8 h-8 text-black bg-gray-50 p-2 rounded-xl" onClick={() => setMenuOpen(false)} />
           </div>
           <div className="flex flex-col gap-8">
